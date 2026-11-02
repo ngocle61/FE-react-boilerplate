@@ -7,7 +7,11 @@ import axios, {
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { API_ENDPOINTS } from '@/core/constants/api-endpoints.constant';
-import { AUTHORIZATION_HEADER, HTTP_STATUS } from '@/core/constants/http.constant';
+import {
+  AUTHORIZATION_HEADER,
+  HTTP_STATUS,
+  NETWORK_ERROR_MESSAGE_KEY,
+} from '@/core/constants/http.constant';
 import { SESSION_END_REASONS } from '@/core/constants/session.constant';
 import { setupAuthInterceptor } from '@/core/interceptor/auth.interceptor';
 import { setupHttpErrorInterceptor } from '@/core/interceptor/http-error.interceptor';
@@ -25,6 +29,13 @@ vi.mock('@/core/services/session.service', () => ({ sessionService: { end } }));
 const STALE_TOKEN = 'stale-token';
 const FRESH_TOKEN = 'fresh-token';
 const PROTECTED_URL = '/interventions';
+const SERVICE_UNAVAILABLE = 503;
+
+const refreshResponseError = (status: number) =>
+  new AxiosError('refresh failed', AxiosError.ERR_BAD_RESPONSE, undefined, null, {
+    status,
+    data: {},
+  } as AxiosResponse);
 
 const toResponse = (
   config: InternalAxiosRequestConfig,
@@ -113,14 +124,34 @@ describe('setupAuthInterceptor', () => {
     expect(end).toHaveBeenCalledWith(SESSION_END_REASONS.EXPIRED);
   });
 
-  it('ends the session when the token cannot be refreshed', async () => {
-    refresh.mockRejectedValue(new Error('refresh failed'));
+  it('ends the session when the server rejects the refresh token', async () => {
+    refresh.mockRejectedValue(refreshResponseError(HTTP_STATUS.UNAUTHORIZED));
     const client = createClient(async (config) => unauthorized(config));
 
     const error = await captureError(client.get(PROTECTED_URL));
 
     expect(error).toMatchObject({ status: HTTP_STATUS.UNAUTHORIZED, messageKey: 'unauthorized' });
     expect(end).toHaveBeenCalledWith(SESSION_END_REASONS.EXPIRED);
+  });
+
+  it('keeps the session and reports the outage when the refresh gets a 5xx', async () => {
+    refresh.mockRejectedValue(refreshResponseError(SERVICE_UNAVAILABLE));
+    const client = createClient(async (config) => unauthorized(config));
+
+    const error = await captureError(client.get(PROTECTED_URL));
+
+    expect(error).toMatchObject({ status: SERVICE_UNAVAILABLE });
+    expect(end).not.toHaveBeenCalled();
+  });
+
+  it('keeps the session and reports the outage when the refresh has no network', async () => {
+    refresh.mockRejectedValue(new AxiosError('Network Error', AxiosError.ERR_NETWORK));
+    const client = createClient(async (config) => unauthorized(config));
+
+    const error = await captureError(client.get(PROTECTED_URL));
+
+    expect(error).toMatchObject({ status: undefined, messageKey: NETWORK_ERROR_MESSAGE_KEY });
+    expect(end).not.toHaveBeenCalled();
   });
 
   it('leaves a rejected sign-in alone', async () => {

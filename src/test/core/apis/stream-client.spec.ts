@@ -1,8 +1,12 @@
+import { AxiosError } from 'axios';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { streamClient } from '@/core/apis/stream-client';
 import { AUTHORIZATION_HEADER, HTTP_STATUS } from '@/core/constants/http.constant';
-import { SESSION_END_REASONS } from '@/core/constants/session.constant';
+import {
+  MISSING_REFRESH_TOKEN_ERROR,
+  SESSION_END_REASONS,
+} from '@/core/constants/session.constant';
 import { HttpError } from '@/core/utils/http-error.util';
 
 const { read, refresh, end } = vi.hoisted(() => ({
@@ -75,14 +79,24 @@ describe('streamClient.post', () => {
     expect(end).toHaveBeenCalledWith(SESSION_END_REASONS.EXPIRED);
   });
 
-  it('ends the session and raises an HttpError when the refresh fails', async () => {
+  it('ends the session and raises an HttpError when the refresh token is rejected', async () => {
     fetchMock.mockResolvedValue(jsonResponse(HTTP_STATUS.UNAUTHORIZED, {}));
-    refresh.mockRejectedValue(new Error('refresh failed'));
+    refresh.mockRejectedValue(new Error(MISSING_REFRESH_TOKEN_ERROR));
 
     const error = await captureError(post());
 
     expect(error).toBeInstanceOf(HttpError);
     expect(end).toHaveBeenCalledWith(SESSION_END_REASONS.EXPIRED);
+  });
+
+  it('keeps the session and raises an HttpError when the refresh has no network', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(HTTP_STATUS.UNAUTHORIZED, {}));
+    refresh.mockRejectedValue(new AxiosError('Network Error', AxiosError.ERR_NETWORK));
+
+    const error = await captureError(post());
+
+    expect(error).toBeInstanceOf(HttpError);
+    expect(end).not.toHaveBeenCalled();
   });
 
   it('raises the error body the server sent', async () => {

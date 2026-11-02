@@ -5,6 +5,7 @@ import { AUTHORIZATION_HEADER, HTTP_STATUS } from '../constants/http.constant';
 import { accessTokenService } from '../services/access-token.service';
 import { tokenRefreshService } from '../services/token-refresh.service';
 import { toBearerAuthorization } from '../utils/authorization.util';
+import { isSessionRejectedError } from '../utils/session.util';
 
 export const setupAuthInterceptor = (client: AxiosInstance): void => {
   client.interceptors.request.use((config) => {
@@ -35,8 +36,8 @@ export const setupAuthInterceptor = (client: AxiosInstance): void => {
       const accessToken = await tokenRefreshService.refreshOrEndSession();
       request.headers.set(AUTHORIZATION_HEADER, toBearerAuthorization(accessToken));
       return client.request(request);
-    } catch {
-      return Promise.reject(error);
+    } catch (refreshError) {
+      throw isSessionRejectedError(refreshError) ? error : refreshError;
     }
   });
 };

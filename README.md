@@ -104,6 +104,8 @@ root
 - `ROUTE_ACCESS` is shared by the router and the sidebar, so a hidden menu item and a blocked route can never drift apart.
 - Inside pages, gate actions with `<Can permissions={[PERMISSIONS.CALENDAR_MANAGE]}>` or `useAccess().can(...)`. Never compare role names.
 - If the backend returns `permissions` on the user, they override the local `ROLE_PERMISSIONS` policy.
+- A session ends only when the server rejects the refresh token (401 or 403). A network error or a 5xx during a refresh keeps the session, and the failed request can be retried.
+- Tabs share one session: a token refresh, sign-in or sign-out in one tab reaches the others through the `storage` event, and the Web Locks API lets only one tab refresh at a time. Browsers without it, or pages not served over HTTPS or localhost, skip the lock.
 
 ### Generating a module
 

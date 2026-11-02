@@ -40,7 +40,7 @@ root (errorElement: RouteErrorPage, hydrateFallbackElement: PageLoader)
 - **Never guard inside a page**: A page component must not redirect or render 403 based on the user. Mount it under the right guard instead.
 - **Redirect targets are validated**: Read `?redirect=` only through `toSafeRedirectPath`; it rejects absolute, protocol-relative and backslash URLs.
 - **Sign-in does not navigate**: A successful sign-in only starts the session (`sessionService.start`). `GuestRoute` performs the redirect.
-- **Session end goes through `sessionService.end(reason)`**: `SIGN_OUT` for a user action, `EXPIRED` when token refresh fails. It clears the store and the query cache; `ProtectedRoute` reacts to the store change.
+- **Session end goes through `sessionService.end(reason)`**: `SIGN_OUT` for a user action, `EXPIRED` when the server rejects the refresh token (401 or 403). A network error or a 5xx keeps the session so the request can be retried. It clears the store and the query cache; `ProtectedRoute` reacts to the store change.
 
 ---
 
