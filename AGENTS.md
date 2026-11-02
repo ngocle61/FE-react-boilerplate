@@ -2,7 +2,7 @@
 
 Read [global-skill-agent/README.md](./global-skill-agent/README.md) and every rule sheet it lists before touching code.
 
-Stories to implement live in `user-story/`; follow [user-story/README.md](./user-story/README.md) when given one.
+Stories to implement live in `user-story/`. When given one, follow the workflow in [user-story/README.md](./user-story/README.md): requirement, analyze, Figma, implement, QA, result.
 
 ## Stack
 
