@@ -23,9 +23,16 @@ Before starting any task, reading existing code, or writing/refactoring files, y
 
 ### Rule 25 - Mandatory Pre-coding Rule Inspection
 
-- **Always read the rules first**: Upon receiving a task or entering the environment, scan all files in `global-skill-agent/` to ensure compliance with every numbered rule (1 to 37).
+- **Always read the rules first**: Upon receiving a task or entering the environment, scan all files in `global-skill-agent/` to ensure compliance with every numbered rule (1 to 38).
 - **Verify before finishing**: Run `npm run verify` (typecheck, lint with architecture boundaries, tests). Work that fails it is not done.
 - **No exceptions**: Writing code that violates any rule in these documents is considered incorrect.
+
+---
+
+### Rule 38 - Reply to the User in Vietnamese
+
+- **Replies are in Vietnamese**: AI coding agents write every message to the user in Vietnamese, including questions, plans, reports and summaries.
+- **The repository stays as it is**: Code, identifiers, commit messages and project documents keep their current language. Quote commands, paths and error output exactly as they are.
 
 ---
 
@@ -72,4 +79,5 @@ A rule enforced by a tool fails `npm run verify` or CI on its own. A **review** 
 | 35   | Typed translation keys                   | `tsc` (`CustomTypeOptions` in `src/core/types/i18next.d.ts`)                                               |
 | 36   | Route loaders and the session            | review                                                                                                     |
 | 37   | Generated API contract, parsed responses | BE `create-openapi-document.spec.ts` · FE CI contract diff · `tsc` · `no-restricted-imports` (no raw HTTP) |
+| 38   | Reply to the user in Vietnamese          | review                                                                                                     |
 | —    | Specs live under `src/test/`             | `architecture/spec-location`                                                                               |
