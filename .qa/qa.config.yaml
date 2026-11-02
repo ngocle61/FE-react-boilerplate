@@ -34,7 +34,7 @@ environments:
       frontend_url: "http://localhost:3000"
       backend_env: local
       start: "npm run dev"
-      mutation: allow
+      mutation: ask
 
 network:
   vpn_required: false
@@ -69,6 +69,7 @@ report:
 extensions: []
 
 rules:
+  - "The backend `.env` points at a shared cloud database, not a local one. Ask before any write to it, including db:migrate, db:deploy, db:seed, test:e2e and QA scenarios that change data."
   - "Stories live in FE-react-boilerplate/user-story/. Follow the story's acceptance criteria first."
   - "When a feature crosses several roles, ask the user for the accounts before testing."
   - "Exception for this repo only: .qa/ is committed and public on purpose (demo project). The git.local-only, git.qa-not-tracked and git.ignore warnings are expected. Do not run verify_setup.py --fix here: it adds .qa/ to .git/info/exclude."

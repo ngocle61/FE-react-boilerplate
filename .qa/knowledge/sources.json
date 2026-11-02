@@ -1,9 +1,9 @@
 {
  "AGENTS.md": {
-  "hash": "98b9f07efc3a",
-  "words": 324,
+  "hash": "b9de88a226e4",
+  "words": 333,
   "chunks": 4,
-  "mtime": 1793586191.927821
+  "mtime": 1793592413.2720926
  },
  "generators\\README.md": {
   "hash": "8521709ba35d",
@@ -24,10 +24,10 @@
   "mtime": 1793583529.3242033
  },
  "global-skill-agent\\README.md": {
-  "hash": "6a010a6fe14c",
-  "words": 852,
-  "chunks": 4,
-  "mtime": 1793583529.3242033
+  "hash": "0ed419e1d32a",
+  "words": 925,
+  "chunks": 5,
+  "mtime": 1793594187.2615118
  },
  "global-skill-agent\\routing.md": {
   "hash": "1ca41e7ffe6a",
@@ -66,10 +66,10 @@
   "mtime": 1793586193.3107991
  },
  "user-story\\README.md": {
-  "hash": "9852b5863c06",
-  "words": 197,
-  "chunks": 3,
-  "mtime": 1793586191.1305082
+  "hash": "bf1d7ebece07",
+  "words": 726,
+  "chunks": 9,
+  "mtime": 1793592797.1538146
  },
  ".qa\\how-to-test.md": {
   "hash": "97ec1cdc302c",

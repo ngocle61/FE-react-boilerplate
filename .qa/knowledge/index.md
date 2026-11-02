@@ -2,12 +2,6 @@
 
 Map of ingested documents. Search for detail: `kb.py search "<topic>"`.
 
-## AGENTS.md  (324 words, 4 chunks)
-- Agent Guide: Read [global skill agent/README.md](./global skill agent/README.md) and every rule sheet it lists before touching code.
-- Agent Guide > Stack: React 19 · TypeScript 7 ( tsc , with the TypeScript 6 API kept for typescript eslint) · Vite 8 · Tailwind CSS 4 · shadcn/ui (radix nova) · React Router 8 (data
-- Agent Guide > Commands: Command   Purpose     :    :       npm run dev    Dev server on http://localhost:3000 (proxies  /api  to the NestJS API in  ../BE nestjs boilerplate )      npm
-- Agent Guide > Layers: Folder   Holds   May import     :    :    :       src/ widgets    Design system primitives ( ui/ , imported via  @ui ) and form fields ( ui/form/ , imported via
-
 ## generators\README.md  (365 words, 4 chunks)
 - Code generators: npm run gen  runs [Plop](https://plopjs.com) with  plopfile.js .
 - Code generators > `list-screen`: A paginated list screen wired end to end from one BE endpoint.
@@ -25,11 +19,6 @@ Map of ingested documents. Search for detail: `kb.py search "<topic>"`.
 - React Rules: React component practices.
 - React Rules > Rule 3 - No API Calls in Shared Components: Never make API calls in  src/shared/components  because all components there are dumb/presentational components.
 - React Rules > ⚛️ React Composition Patterns: Guidelines for building flexible, modular, and scaling components.
-
-## global-skill-agent\README.md  (852 words, 4 chunks)
-- ⚠️ MANDATORY RULE: READ BEFORE CODING: This repository enforces strict engineering rules that both human developers and AI coding agents must follow.
-- ⚠️ MANDATORY RULE: READ BEFORE CODING > Rule 25 - Mandatory Pre-coding Rule Inspection: Always read the rules first : Upon receiving a task or entering the environment, scan all files in  global skill agent/  to ensure compliance with every numbered rule (1 to 37).
-- ⚠️ MANDATORY RULE: READ BEFORE CODING > How Each Rule Is Enforced: A rule enforced by a tool fails  npm run verify  or CI on its own.
 
 ## global-skill-agent\routing.md  (977 words, 8 chunks)
 - Routing & Access Rules: How routes are declared, guarded, and connected to navigation.
@@ -89,10 +78,22 @@ Map of ingested documents. Search for detail: `kb.py search "<topic>"`.
 - FE React Boilerplate > Coding rules: Human and AI contributors follow the rule sheets in [global skill agent/](./global skill agent/README.md): structure, routing, React composition, styling, TypeScript, shadcn and forms.
 - FE React Boilerplate > Roadmap: AI Chat module: streaming responses, conversation history, markdown rendering   Calendar module: month/week/agenda views and event management
 
-## user-story\README.md  (197 words, 3 chunks)
-- User Stories: Put the stories to implement here, one Markdown file per story, named  <id <short title .md  (for example  123 export users.md ).
-- User Stories > Story format: Only the title and acceptance criteria are required.
-- User Stories > For agents: 1. Read [global skill agent/README.md](../global skill agent/README.md) and every rule sheet it lists.
-
 ## .qa\how-to-test.md  (73 words, 1 chunks)
 - How to test: The user's words:   ok.
+
+## AGENTS.md  (333 words, 4 chunks)
+- Agent Guide: Read [global skill agent/README.md](./global skill agent/README.md) and every rule sheet it lists before touching code.
+- Agent Guide > Stack: React 19 · TypeScript 7 ( tsc , with the TypeScript 6 API kept for typescript eslint) · Vite 8 · Tailwind CSS 4 · shadcn/ui (radix nova) · React Router 8 (data
+- Agent Guide > Commands: Command   Purpose     :    :       npm run dev    Dev server on http://localhost:3000 (proxies  /api  to the NestJS API in  ../BE nestjs boilerplate )      npm
+- Agent Guide > Layers: Folder   Holds   May import     :    :    :       src/ widgets    Design system primitives ( ui/ , imported via  @ui ) and form fields ( ui/form/ , imported via
+
+## user-story\README.md  (726 words, 9 chunks)
+- User Stories: Put the stories to implement here, one Markdown file per story, named  <id <short title .md  (for example  123 export users.md ).
+- User Stories > Story format: Only the title and acceptance criteria are required.
+- User Stories > Workflow: Requirement → analyze → Figma → implement → QA → result.
+
+## global-skill-agent\README.md  (925 words, 5 chunks)
+- ⚠️ MANDATORY RULE: READ BEFORE CODING: This repository enforces strict engineering rules that both human developers and AI coding agents must follow.
+- ⚠️ MANDATORY RULE: READ BEFORE CODING > Rule 25 - Mandatory Pre-coding Rule Inspection: Always read the rules first : Upon receiving a task or entering the environment, scan all files in  global skill agent/  to ensure compliance with every numbered rule (1 to 38).
+- ⚠️ MANDATORY RULE: READ BEFORE CODING > Rule 38 - Reply to the User in Vietnamese: Replies are in Vietnamese : AI coding agents write every message to the user in Vietnamese, including questions, plans, reports and summaries.
+- ⚠️ MANDATORY RULE: READ BEFORE CODING > How Each Rule Is Enforced: A rule enforced by a tool fails  npm run verify  or CI on its own.
