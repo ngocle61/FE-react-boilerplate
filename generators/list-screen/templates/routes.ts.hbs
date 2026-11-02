@@ -1,0 +1,20 @@
+import type { RouteObject } from 'react-router';
+
+import { ROUTE_ACCESS } from '@/core/constants/route-access.constant';
+import { ROUTE_PATHS } from '@/core/constants/route-paths.constant';
+import type { RouteHandle } from '@/core/types/route-handle.type';
+
+import { createGuardedRoute } from '../create-guarded-route';
+import { lazyPage } from '../lazy-page';
+import { {{module.camel}}Loader } from '../loaders/{{module.kebab}}.loader';
+
+export const {{module.camel}}Routes: RouteObject[] = [
+  createGuardedRoute(ROUTE_ACCESS.{{module.constant}}, [
+    {
+      path: ROUTE_PATHS.{{module.constant}},
+      loader: {{module.camel}}Loader,
+      lazy: lazyPage(() => import('@/modules/{{module.kebab}}/{{module.kebab}}'), '{{module.pascal}}Page'),
+      handle: { breadcrumb: '{{navigationLabelKey}}' } satisfies RouteHandle,
+    },
+  ]),
+];

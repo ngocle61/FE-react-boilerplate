@@ -1,0 +1,105 @@
+{
+  "app": {
+    "tagline": "Boilerplate"
+  },
+  "authBrand": {
+    "tagline": "One workspace for your team's schedule, conversations and access.",
+    "featuresLabel": "What you can do",
+    "features": {
+      "access": "Role-based access control",
+      "calendar": "Calendar & scheduling",
+      "chat": "Team & AI chat",
+      "dashboard": "Dashboard & insights"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "workspace": "Workspace",
+      "administration": "Administration"
+    },
+    "items": {
+      "dashboard": "Dashboard",
+      "chat": "AI Chat",
+      "calendar": "Calendar",
+      "users": "Users",
+      "interventionCall": "Call client"
+    }
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "reload": "Reload page",
+    "goHome": "Back to home",
+    "close": "Close"
+  },
+  "account": {
+    "signOut": "Sign out"
+  },
+  "signOut": {
+    "title": "Sign out?",
+    "description": "You will need to sign in again to access your workspace.",
+    "confirm": "Sign out"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "roles": {
+    "ADMIN": "Admin",
+    "MEMBER": "Member",
+    "VIEWER": "Viewer"
+  },
+  "status": {
+    "loading": "Loading page",
+    "forbidden": {
+      "title": "Access denied",
+      "description": "Your role does not have permission to open this page."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or has been moved."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred while rendering this page."
+    },
+    "chunk": {
+      "title": "A new version is available",
+      "description": "Reload the page to get the latest version of the app."
+    }
+  },
+  "queryState": {
+    "errorTitle": "Unable to load data",
+    "errorDescription": "Check your connection and try again."
+  },
+  "comingSoon": {
+    "title": "Coming soon"
+  },
+  "filterBar": {
+    "trigger": "Filters",
+    "dialogTitle": "Filters",
+    "dialogDescription": "Narrow down the list, then apply your changes.",
+    "apply": "Apply",
+    "clearAll": "Clear all"
+  },
+  "pagination": {
+    "navigation": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "previousPage": "Go to previous page",
+    "nextPage": "Go to next page",
+    "page": "Page {{page}}",
+    "more": "More pages"
+  },
+  "multiSelect": {
+    "searchPlaceholder": "Search…",
+    "empty": "No results found.",
+    "remove": "Remove",
+    "clear": "Clear selection"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "signIn": {
+    "title": "Welcome back",
+    "description": "Sign in with your work email to continue.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@company.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "secureNote": "Passwords are never stored in plain text.",
+    "failedTitle": "Sign in failed",
+    "sessionExpiredTitle": "Your session has expired",
+    "sessionExpiredDescription": "Sign in again to continue where you left off.",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required"
+    },
+    "demo": {
+      "title": "Demo accounts",
+      "description": "Seeded accounts for local development. Pick a role to sign in instantly.",
+      "signInAs": "Sign in as {{role}}"
+    }
+  }
+}

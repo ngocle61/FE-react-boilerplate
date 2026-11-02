@@ -1,0 +1,28 @@
+{{#if rowTranslation}}
+import { useTranslation } from 'react-i18next';
+
+import { I18N_NAMESPACES } from '@/core/constants/language.constant';
+{{/if}}
+{{#if rowUsesDate}}
+import { formatDate } from '@/core/utils/date.util';
+{{/if}}
+import { TableCell, TableRow } from '@ui';
+
+{{#if rowUsesEmptyCell}}
+import { {{emptyCell}} } from '../../../constants/{{module.kebab}}-table.constant';
+{{/if}}
+import type { {{module.pascal}}TableRowProps } from '../../../types/{{module.kebab}}-table-row.type';
+
+export const {{module.pascal}}TableRow = ({ row }: {{module.pascal}}TableRowProps) => {
+{{#if rowTranslation}}
+  const { {{rowTranslation}} } = useTranslation(I18N_NAMESPACES.{{module.constant}});
+
+{{/if}}
+  return (
+    <TableRow>
+{{#each columns}}
+      <TableCell>{{{cell}}}</TableCell>
+{{/each}}
+    </TableRow>
+  );
+};

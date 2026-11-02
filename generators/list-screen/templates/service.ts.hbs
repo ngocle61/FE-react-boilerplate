@@ -1,0 +1,15 @@
+import { {{entity.camel}}Api } from '@/core/apis/{{entity.kebab}}.api';
+import type {
+  {{entity.pascal}}ListRequestParams,
+  {{entity.pascal}}ListResponseDto,
+} from '@/core/types/{{entity.kebab}}.dto';
+
+export const {{entity.camel}}Service = {
+  list: async (
+    params: {{entity.pascal}}ListRequestParams,
+    signal?: AbortSignal,
+  ): Promise<{{entity.pascal}}ListResponseDto> => {
+    const { data } = await {{entity.camel}}Api.list(params, signal);
+    return data;
+  },
+};

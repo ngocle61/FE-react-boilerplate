@@ -1,0 +1,21 @@
+{
+  "title": "Xin chào, {{name}}",
+  "description": "Tổng quan phiên đăng nhập và các module mà vai trò của bạn được truy cập.",
+  "session": {
+    "title": "Phiên đăng nhập",
+    "description": "Vai trò và quyền được xác định cho người dùng hiện tại.",
+    "permissions": "Quyền",
+    "actions": {
+      "view": "Xem",
+      "use": "Sử dụng",
+      "manage": "Quản lý"
+    }
+  },
+  "access": {
+    "title": "Quyền truy cập route",
+    "description": "Module bị khóa sẽ bị ẩn khỏi sidebar và hiển thị trang từ chối truy cập khi mở trực tiếp.",
+    "granted": "Được phép",
+    "denied": "Bị khóa",
+    "open": "Mở"
+  }
+}

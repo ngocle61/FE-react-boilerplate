@@ -1,0 +1,17 @@
+import { queryOptions } from '@tanstack/react-query';
+
+import { QUERY_SCOPES } from '@/core/constants/query-keys.constant';
+import type { {{entity.pascal}}ListRequestParams } from '@/core/types/{{entity.kebab}}.dto';
+
+import { {{module.constant}}_QUERY_KEYS } from '../constants/query-keys.constant';
+import { {{entity.camel}}Service } from '../services/{{entity.kebab}}.service';
+
+export const {{entity.camel}}Queries = {
+  all: () => [{{module.constant}}_QUERY_KEYS.{{entity.constant}}_LIST],
+
+  list: (params: {{entity.pascal}}ListRequestParams) =>
+    queryOptions({
+      queryKey: [{{module.constant}}_QUERY_KEYS.{{entity.constant}}_LIST, QUERY_SCOPES.LIST, params],
+      queryFn: ({ signal }) => {{entity.camel}}Service.list(params, signal),
+    }),
+};

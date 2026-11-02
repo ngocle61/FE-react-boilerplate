@@ -1,0 +1,13 @@
+import type { z } from 'zod';
+
+import type {
+  {{operation.itemSchema}},
+  {{operation.listSchema}},
+  {{operation.querySchema}},
+} from '../contract/zod.gen';
+
+export type {{entity.pascal}}ListItemDto = z.infer<typeof {{operation.itemSchema}}>;
+
+export type {{entity.pascal}}ListResponseDto = z.infer<typeof {{operation.listSchema}}>;
+
+export type {{entity.pascal}}ListRequestParams = z.input<typeof {{operation.querySchema}}>;

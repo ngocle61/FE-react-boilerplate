@@ -1,0 +1,7 @@
+import { z } from 'zod';
+
+import { FIRST_PAGE } from '@/shared/constants/pagination.constant';
+
+export const {{module.camel}}SearchSchema = z.object({
+  page: z.coerce.number().int().positive().catch(FIRST_PAGE),
+});

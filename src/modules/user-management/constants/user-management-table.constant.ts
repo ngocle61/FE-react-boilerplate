@@ -1,0 +1,1 @@
+export const USER_MANAGEMENT_TABLE_COLUMN_COUNT = 6;

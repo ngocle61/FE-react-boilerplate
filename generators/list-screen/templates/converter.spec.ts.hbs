@@ -1,0 +1,19 @@
+import { describe, expect, it } from 'vitest';
+
+import { {{module.constant}}_PAGE_SIZE } from '@/modules/{{module.kebab}}/constants/pagination.constant';
+import { {{entity.camel}}Converter } from '@/modules/{{module.kebab}}/converters/{{entity.kebab}}.converter';
+
+describe('{{entity.camel}}Converter', () => {
+  it('asks the API for the page in the URL with the screen page size', () => {
+    expect({{entity.camel}}Converter.toListParams({ page: 3 })).toEqual({
+      page: 3,
+      pageSize: {{module.constant}}_PAGE_SIZE,
+    });
+  });
+
+  it('keeps the paging fields when it maps a page', () => {
+    const page = { items: [], total: 0, page: 1, pageSize: {{module.constant}}_PAGE_SIZE };
+
+    expect({{entity.camel}}Converter.toPage(page)).toEqual(page);
+  });
+});

@@ -1,0 +1,21 @@
+{
+  "title": "Welcome, {{name}}",
+  "description": "An overview of your session and the modules your role can reach.",
+  "session": {
+    "title": "Your session",
+    "description": "Role and permissions resolved for the signed-in user.",
+    "permissions": "Permissions",
+    "actions": {
+      "view": "View",
+      "use": "Use",
+      "manage": "Manage"
+    }
+  },
+  "access": {
+    "title": "Route access",
+    "description": "Locked modules are hidden from the sidebar and render an access denied page when opened directly.",
+    "granted": "Granted",
+    "denied": "Locked",
+    "open": "Open"
+  }
+}

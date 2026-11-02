@@ -1,0 +1,117 @@
+{
+  "title": "Calendar",
+  "description": "Plan and keep track of interventions.",
+  "toolbar": {
+    "previous": "Previous",
+    "next": "Next",
+    "today": "Today",
+    "newIntervention": "New intervention",
+    "combinedView": "Combined view",
+    "toSchedule": "To schedule",
+    "view": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    }
+  },
+  "filters": {
+    "searchLabel": "Search interventions",
+    "searchPlaceholder": "Search client, type, notes…",
+    "technicianLabel": "Technicians",
+    "technicianPlaceholder": "All technicians",
+    "statusLabel": "Statuses",
+    "statusPlaceholder": "All statuses"
+  },
+  "unscheduled": {
+    "title": "To schedule",
+    "description": "Drag a card onto the calendar to schedule it, or drop a calendar card here to move it back.",
+    "close": "Close",
+    "emptyTitle": "Nothing to schedule",
+    "emptyDescription": "New requests without a time slot will show up here."
+  },
+  "dragDrop": {
+    "rescheduleSuccess": "Intervention rescheduled.",
+    "unscheduleSuccess": "Intervention moved back to the schedule queue."
+  },
+  "card": {
+    "urgent": "Urgent",
+    "timeRange": "{{start}} – {{end}}",
+    "openChat": "Discuss in AI Chat",
+    "callClient": "Call client (opens in a new tab)"
+  },
+  "call": {
+    "title": "Call client",
+    "description": "Call the client about this intervention.",
+    "action": "Call now",
+    "copy": "Copy number",
+    "copied": "Phone number copied.",
+    "copyError": "Could not copy the phone number.",
+    "unscheduled": "Not scheduled yet",
+    "noPhoneTitle": "No phone number",
+    "noPhoneDescription": "This client has no phone number yet. Add one to call them from here."
+  },
+  "status": {
+    "TO_SCHEDULE": "To schedule",
+    "AWAITING_CALLBACK": "Awaiting callback",
+    "SCHEDULED": "Scheduled",
+    "IN_PROGRESS": "In progress",
+    "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled"
+  },
+  "week": {
+    "noItems": "No interventions"
+  },
+  "duration": {
+    "minutes": "{{count}} min",
+    "hours": "{{count}}h",
+    "hoursAndMinutes": "{{hours}}h{{minutes}}"
+  },
+  "form": {
+    "createTitle": "New intervention",
+    "createDescription": "Schedule a new intervention for a client.",
+    "editTitle": "Edit intervention",
+    "editDescription": "Update the details of this intervention.",
+    "clientLabel": "Client",
+    "clientPlaceholder": "Select a client",
+    "clientSearchPlaceholder": "Search by name, phone or email",
+    "clientSearchEmpty": "No client matches this search.",
+    "clientSearching": "Searching…",
+    "createNewClient": "Create a new client",
+    "useExistingClient": "Choose an existing client instead",
+    "clientNameLabel": "Client name",
+    "clientPhoneLabel": "Phone",
+    "clientEmailLabel": "Email",
+    "typeLabel": "Type",
+    "typePlaceholder": "e.g. Maintenance, Repair, Inspection",
+    "technicianLabel": "Technician",
+    "unassigned": "Unassigned",
+    "dateLabel": "Date",
+    "datePlaceholder": "Pick a date",
+    "timeLabel": "Time",
+    "durationLabel": "Duration",
+    "statusLabel": "Status",
+    "urgentLabel": "Urgent",
+    "urgentDescription": "Marks the card with a yellow star corner so the team handles it first.",
+    "notesLabel": "Notes",
+    "delete": "Delete",
+    "create": "Create intervention",
+    "saveChanges": "Save changes",
+    "createSuccess": "Intervention created.",
+    "updateSuccess": "Intervention updated.",
+    "validation": {
+      "typeRequired": "Enter a type of intervention.",
+      "durationRequired": "Select a duration.",
+      "clientRequired": "Select a client or create a new one.",
+      "dateRequiredWhenScheduled": "Pick a date for a scheduled intervention.",
+      "tooLong": "Must be {{max}} characters or fewer."
+    }
+  },
+  "deleteDialog": {
+    "title": "Delete intervention?",
+    "description": "This will permanently remove the intervention for {{client}}. This cannot be undone.",
+    "confirm": "Delete"
+  },
+  "actions": {
+    "deleteSuccess": "Intervention deleted."
+  }
+}

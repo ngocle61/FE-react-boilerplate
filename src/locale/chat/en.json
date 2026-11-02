@@ -1,0 +1,11 @@
+{
+  "title": "AI Chat",
+  "description": "Ask questions and get answers from an AI assistant.",
+  "emptyMessages": "No messages yet. Say hello!",
+  "typing": "Thinking…",
+  "inputPlaceholder": "Ask something…",
+  "send": "Send",
+  "contextLabel": "About: {{label}}",
+  "clearContext": "Back to general chat",
+  "stop": "Stop"
+}
