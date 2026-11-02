@@ -73,7 +73,7 @@ const forbid = (from, to, message) => ({
 });
 
 export default defineConfig([
-  globalIgnores(['dist', 'coverage', 'src/core/contract']),
+  globalIgnores(['dist', 'coverage', 'src/core/contract', '.qa']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

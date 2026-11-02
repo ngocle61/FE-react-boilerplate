@@ -1,0 +1,75 @@
+# .qa/qa.config.yaml - QA agent configuration for THIS project. No secret values here.
+version: 1
+
+project:
+  name: "FE-react-boilerplate"
+  agent_name: "qa-agent"
+  kinds: [frontend]
+  context_file: .qa/project-context.md
+  how_to_test: .qa/how-to-test.md
+  scratch_dir: .qa/runs
+  task_style: [acceptance-criteria]
+
+agent:
+  runtime: claude
+  ask_user_tool: AskUserQuestion
+
+task_source:
+  type: manual
+  auth:
+    method: none
+  id_pattern: "user-story/[\\w.-]+\\.md"
+  read_only: true
+
+workstreams:
+  frontend: { labels: ["FRONTEND"], title_prefixes: ["[FE]"] }
+  backend:  { labels: ["BACKEND"],  title_prefixes: ["[BE]"] }
+  unsupported: { labels: [], title_prefixes: [] }
+  module_from: ""
+
+environments:
+  default: local
+  list:
+    local:
+      frontend_url: "http://localhost:3000"
+      backend_env: local
+      start: "npm run dev"
+      mutation: allow
+
+network:
+  vpn_required: false
+  vpn_check_url: ""
+  notes: ""
+
+frontend:
+  browser: chrome
+  debug_port: 9222
+  login:
+    mode: manual
+    sso: "email + password, demo accounts from the BE seed (one-click buttons on the sign-in page)"
+  post_login_steps: []
+  app_notes: "The dev server proxies /api to the NestJS API on 127.0.0.1:3001, so the BE must be running with a seeded database."
+  feature_flags:
+    provider: none
+    how_to_toggle: ""
+
+knowledge:
+  dir: .qa/knowledge
+  docs: [README.md, AGENTS.md, global-skill-agent, generators/README.md, user-story/README.md, .qa/how-to-test.md]
+  code_map: true
+  code_use: locate
+
+report:
+  format: default
+  ascii_only: true
+  style: concise
+  language: en
+  screenshots_dir: ""
+
+extensions: []
+
+rules:
+  - "Stories live in FE-react-boilerplate/user-story/. Follow the story's acceptance criteria first."
+  - "When a feature crosses several roles, ask the user for the accounts before testing."
+  - "Exception for this repo only: .qa/ is committed and public on purpose (demo project). The git.local-only, git.qa-not-tracked and git.ignore warnings are expected. Do not run verify_setup.py --fix here: it adds .qa/ to .git/info/exclude."
+  - "secrets.env, runs/pw-profile/ and knowledge/chunks.jsonl stay ignored through .qa/.gitignore. Never commit them."

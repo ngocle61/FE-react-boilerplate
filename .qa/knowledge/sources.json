@@ -1,0 +1,80 @@
+{
+ "AGENTS.md": {
+  "hash": "98b9f07efc3a",
+  "words": 324,
+  "chunks": 4,
+  "mtime": 1793586191.927821
+ },
+ "generators\\README.md": {
+  "hash": "8521709ba35d",
+  "words": 365,
+  "chunks": 4,
+  "mtime": 1793583529.3095436
+ },
+ "global-skill-agent\\form.md": {
+  "hash": "0520e93312aa",
+  "words": 1211,
+  "chunks": 7,
+  "mtime": 1793583529.3242033
+ },
+ "global-skill-agent\\react.md": {
+  "hash": "dd2623ed2b41",
+  "words": 1891,
+  "chunks": 20,
+  "mtime": 1793583529.3242033
+ },
+ "global-skill-agent\\README.md": {
+  "hash": "6a010a6fe14c",
+  "words": 852,
+  "chunks": 4,
+  "mtime": 1793583529.3242033
+ },
+ "global-skill-agent\\routing.md": {
+  "hash": "1ca41e7ffe6a",
+  "words": 977,
+  "chunks": 8,
+  "mtime": 1793583529.3408158
+ },
+ "global-skill-agent\\shadcn.md": {
+  "hash": "7bce5e758ef1",
+  "words": 1460,
+  "chunks": 14,
+  "mtime": 1793583529.3408158
+ },
+ "global-skill-agent\\structure.md": {
+  "hash": "d24196eb8b03",
+  "words": 2673,
+  "chunks": 16,
+  "mtime": 1793583529.3408158
+ },
+ "global-skill-agent\\style.md": {
+  "hash": "b91d2c64fa6e",
+  "words": 1293,
+  "chunks": 16,
+  "mtime": 1793583529.3408158
+ },
+ "global-skill-agent\\typescript.md": {
+  "hash": "36f885fa0476",
+  "words": 345,
+  "chunks": 6,
+  "mtime": 1793583529.3408158
+ },
+ "README.md": {
+  "hash": "574fe6711dff",
+  "words": 1646,
+  "chunks": 14,
+  "mtime": 1793586193.3107991
+ },
+ "user-story\\README.md": {
+  "hash": "9852b5863c06",
+  "words": 197,
+  "chunks": 3,
+  "mtime": 1793586191.1305082
+ },
+ ".qa\\how-to-test.md": {
+  "hash": "97ec1cdc302c",
+  "words": 73,
+  "chunks": 1,
+  "mtime": 1793587379.5736408
+ }
+}
