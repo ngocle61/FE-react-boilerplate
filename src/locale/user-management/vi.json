@@ -1,0 +1,64 @@
+{
+  "title": "Người dùng",
+  "description": "Quản lý thành viên và vai trò.",
+  "filters": {
+    "searchLabel": "Tìm người dùng",
+    "searchPlaceholder": "Tìm theo tên hoặc email",
+    "roleLabel": "Vai trò",
+    "statusLabel": "Trạng thái",
+    "allRoles": "Tất cả vai trò",
+    "allStatuses": "Tất cả trạng thái"
+  },
+  "toolbar": {
+    "newUser": "Thêm người dùng"
+  },
+  "table": {
+    "columns": {
+      "user": "Người dùng",
+      "email": "Email",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "actions": "Thao tác"
+    },
+    "empty": "Không tìm thấy người dùng nào.",
+    "totalLabel": "{{count}} người dùng"
+  },
+  "actions": {
+    "edit": "Chỉnh sửa",
+    "activate": "Kích hoạt",
+    "deactivate": "Vô hiệu hóa",
+    "cannotModifySelf": "Bạn không thể chỉnh sửa tài khoản của chính mình.",
+    "activateSuccess": "Đã kích hoạt người dùng.",
+    "deactivateSuccess": "Đã vô hiệu hóa người dùng."
+  },
+  "status": {
+    "active": "Đang hoạt động",
+    "inactive": "Đã vô hiệu hóa"
+  },
+  "form": {
+    "createTitle": "Người dùng mới",
+    "createDescription": "Tạo tài khoản thành viên mới.",
+    "editTitle": "Chỉnh sửa người dùng",
+    "editDescription": "Cập nhật thông tin thành viên.",
+    "emailLabel": "Email",
+    "fullNameLabel": "Họ tên",
+    "passwordLabel": "Mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "roleLabel": "Vai trò",
+    "statusLabel": "Đang hoạt động",
+    "create": "Tạo người dùng",
+    "saveChanges": "Lưu thay đổi",
+    "createSuccess": "Tạo người dùng thành công.",
+    "updateSuccess": "Cập nhật người dùng thành công.",
+    "validation": {
+      "emailRequired": "Vui lòng nhập email.",
+      "emailInvalid": "Email không hợp lệ.",
+      "fullNameRequired": "Vui lòng nhập họ tên.",
+      "passwordMin": "Mật khẩu phải có ít nhất {{min}} ký tự.",
+      "roleRequired": "Vui lòng chọn vai trò.",
+      "tooLong": "Tối đa {{max}} ký tự."
+    }
+  }
+}

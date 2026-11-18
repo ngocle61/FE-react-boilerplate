@@ -1,0 +1,16 @@
+import { ROUTE_ACCESS } from '@/core/constants/route-access.constant';
+import { queryClient } from '@/core/libs/query-client';
+import { {{entity.camel}}Converter } from '@/modules/{{module.kebab}}/converters/{{entity.kebab}}.converter';
+import { {{entity.camel}}Queries } from '@/modules/{{module.kebab}}/queries/{{entity.kebab}}.queries';
+import { {{module.camel}}SearchSchema } from '@/modules/{{module.kebab}}/schema/{{module.kebab}}-search.schema';
+import { readSearchParams } from '@/shared/utils/search-params.util';
+
+import { createPrefetchLoader } from './create-prefetch-loader';
+
+export const {{module.camel}}Loader = createPrefetchLoader(ROUTE_ACCESS.{{module.constant}}, (searchParams) => {
+  const searchState = {{module.camel}}SearchSchema.parse(readSearchParams(searchParams));
+
+  void queryClient.prefetchQuery(
+    {{entity.camel}}Queries.list({{entity.camel}}Converter.toListParams(searchState)),
+  );
+});

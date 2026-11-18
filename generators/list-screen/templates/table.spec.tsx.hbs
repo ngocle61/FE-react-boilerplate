@@ -1,0 +1,51 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+
+import { i18nReady } from '@/core/libs/i18n';
+import { {{module.pascal}}Table } from '@/modules/{{module.kebab}}/components/{{module.kebab}}-table/{{module.kebab}}-table';
+import type { {{entity.pascal}}Row } from '@/modules/{{module.kebab}}/types/{{entity.kebab}}-row.type';
+import type { PaginatedQueryResult } from '@/shared/types/pagination.type';
+
+const createListQuery = (
+  overrides: Partial<PaginatedQueryResult<{{entity.pascal}}Row>> = {},
+): PaginatedQueryResult<{{entity.pascal}}Row> => ({
+  rows: [],
+  total: 0,
+  totalPages: 1,
+  isLoading: false,
+  isError: false,
+  refetch: vi.fn(() => Promise.resolve()),
+  ...overrides,
+});
+
+const renderTable = (listQuery = createListQuery()) =>
+  render(<{{module.pascal}}Table listQuery={listQuery} page={1} onPageChange={vi.fn()} />);
+
+describe('{{module.pascal}}Table', () => {
+  beforeAll(async () => {
+    await i18nReady;
+  });
+
+  it('shows a spinner row while loading', () => {
+    renderTable(createListQuery({ isLoading: true }));
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+
+  it('shows the empty row when the page has no records', () => {
+    renderTable();
+
+    expect(screen.getByText('{{{locale.empty}}}')).toBeInTheDocument();
+  });
+
+  it('replaces the table with a retry view on error', async () => {
+    const user = userEvent.setup();
+    const listQuery = createListQuery({ isError: true });
+    renderTable(listQuery);
+
+    await user.click(screen.getByRole('button'));
+
+    expect(listQuery.refetch).toHaveBeenCalledTimes(1);
+  });
+});

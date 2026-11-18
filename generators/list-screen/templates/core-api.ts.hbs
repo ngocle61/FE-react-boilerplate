@@ -1,0 +1,16 @@
+import { API_ENDPOINTS } from '../constants/api-endpoints.constant';
+import { {{operation.listSchema}} } from '../contract/zod.gen';
+import type {
+  {{entity.pascal}}ListRequestParams,
+  {{entity.pascal}}ListResponseDto,
+} from '../types/{{entity.kebab}}.dto';
+import { apiClient } from './api-client';
+
+export const {{entity.camel}}Api = {
+  list: (params: {{entity.pascal}}ListRequestParams, signal?: AbortSignal) =>
+    apiClient.get<{{entity.pascal}}ListResponseDto>(API_ENDPOINTS.{{resource.constant}}.BASE, {
+      params,
+      signal,
+      responseSchema: {{operation.listSchema}},
+    }),
+};

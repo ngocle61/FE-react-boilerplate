@@ -1,0 +1,117 @@
+{
+  "title": "Lịch",
+  "description": "Lên kế hoạch và theo dõi các lịch hẹn.",
+  "toolbar": {
+    "previous": "Trước",
+    "next": "Sau",
+    "today": "Hôm nay",
+    "newIntervention": "Tạo lịch hẹn",
+    "combinedView": "Gộp chung",
+    "toSchedule": "Chưa xếp lịch",
+    "view": {
+      "day": "Ngày",
+      "week": "Tuần",
+      "month": "Tháng"
+    }
+  },
+  "filters": {
+    "searchLabel": "Tìm lịch hẹn",
+    "searchPlaceholder": "Tìm khách hàng, loại việc, ghi chú…",
+    "technicianLabel": "Kỹ thuật viên",
+    "technicianPlaceholder": "Tất cả kỹ thuật viên",
+    "statusLabel": "Trạng thái",
+    "statusPlaceholder": "Tất cả trạng thái"
+  },
+  "unscheduled": {
+    "title": "Chưa xếp lịch",
+    "description": "Kéo thẻ vào lịch để xếp giờ, hoặc thả thẻ trên lịch vào đây để bỏ lịch.",
+    "close": "Đóng",
+    "emptyTitle": "Không có gì cần xếp lịch",
+    "emptyDescription": "Yêu cầu mới chưa có giờ hẹn sẽ hiện ở đây."
+  },
+  "dragDrop": {
+    "rescheduleSuccess": "Đã đổi lịch hẹn.",
+    "unscheduleSuccess": "Đã chuyển lịch hẹn về danh sách chờ."
+  },
+  "card": {
+    "urgent": "Khẩn cấp",
+    "timeRange": "{{start}} – {{end}}",
+    "openChat": "Trao đổi trong AI Chat",
+    "callClient": "Gọi khách hàng (mở tab mới)"
+  },
+  "call": {
+    "title": "Gọi khách hàng",
+    "description": "Gọi cho khách hàng về lịch hẹn này.",
+    "action": "Gọi ngay",
+    "copy": "Sao chép số",
+    "copied": "Đã sao chép số điện thoại.",
+    "copyError": "Không thể sao chép số điện thoại.",
+    "unscheduled": "Chưa xếp lịch",
+    "noPhoneTitle": "Chưa có số điện thoại",
+    "noPhoneDescription": "Khách hàng này chưa có số điện thoại. Hãy thêm số để gọi từ đây."
+  },
+  "status": {
+    "TO_SCHEDULE": "Chưa xếp lịch",
+    "AWAITING_CALLBACK": "Chờ gọi lại",
+    "SCHEDULED": "Đã xếp lịch",
+    "IN_PROGRESS": "Đang thực hiện",
+    "COMPLETED": "Hoàn thành",
+    "CANCELLED": "Đã hủy"
+  },
+  "week": {
+    "noItems": "Không có lịch hẹn"
+  },
+  "duration": {
+    "minutes": "{{count}} phút",
+    "hours": "{{count}}h",
+    "hoursAndMinutes": "{{hours}}h{{minutes}}"
+  },
+  "form": {
+    "createTitle": "Tạo lịch hẹn",
+    "createDescription": "Xếp lịch hẹn mới cho một khách hàng.",
+    "editTitle": "Sửa lịch hẹn",
+    "editDescription": "Cập nhật thông tin của lịch hẹn này.",
+    "clientLabel": "Khách hàng",
+    "clientPlaceholder": "Chọn khách hàng",
+    "clientSearchPlaceholder": "Tìm theo tên, số điện thoại hoặc email",
+    "clientSearchEmpty": "Không có khách hàng nào khớp.",
+    "clientSearching": "Đang tìm…",
+    "createNewClient": "Tạo khách hàng mới",
+    "useExistingClient": "Chọn khách hàng có sẵn",
+    "clientNameLabel": "Tên khách hàng",
+    "clientPhoneLabel": "Số điện thoại",
+    "clientEmailLabel": "Email",
+    "typeLabel": "Loại công việc",
+    "typePlaceholder": "VD: Bảo trì, Sửa chữa, Kiểm tra",
+    "technicianLabel": "Kỹ thuật viên",
+    "unassigned": "Chưa phân công",
+    "dateLabel": "Ngày",
+    "datePlaceholder": "Chọn ngày",
+    "timeLabel": "Giờ",
+    "durationLabel": "Thời lượng",
+    "statusLabel": "Trạng thái",
+    "urgentLabel": "Khẩn cấp",
+    "urgentDescription": "Đánh dấu thẻ bằng góc vàng có ngôi sao để cả đội ưu tiên xử lý.",
+    "notesLabel": "Ghi chú",
+    "delete": "Xóa",
+    "create": "Tạo lịch hẹn",
+    "saveChanges": "Lưu thay đổi",
+    "createSuccess": "Đã tạo lịch hẹn.",
+    "updateSuccess": "Đã cập nhật lịch hẹn.",
+    "validation": {
+      "typeRequired": "Nhập loại công việc.",
+      "durationRequired": "Chọn thời lượng.",
+      "clientRequired": "Chọn khách hàng hoặc tạo khách hàng mới.",
+      "dateRequiredWhenScheduled": "Chọn ngày cho lịch hẹn đã xếp lịch.",
+      "tooLong": "Tối đa {{max}} ký tự."
+    }
+  },
+  "deleteDialog": {
+    "title": "Xóa lịch hẹn?",
+    "description": "Thao tác này sẽ xóa vĩnh viễn lịch hẹn của {{client}}. Không thể hoàn tác.",
+    "confirm": "Xóa"
+  },
+  "actions": {
+    "deleteSuccess": "Đã xóa lịch hẹn."
+  }
+}

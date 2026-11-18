@@ -1,0 +1,46 @@
+import { useTranslation } from 'react-i18next';
+
+import { I18N_NAMESPACES } from '@/core/constants/language.constant';
+import {
+  PageHeader,
+  PageHeaderContent,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from '@/shared/components/page-header/page-header';
+import { usePaginatedQuery } from '@/shared/hooks/use-paginated-query';
+import { useSearchParamsState } from '@/shared/hooks/use-search-params-state';
+import { Flex, FLEX_DIRECTIONS } from '@ui';
+
+import { {{module.pascal}}Table } from './components/{{module.kebab}}-table/{{module.kebab}}-table';
+import { {{entity.camel}}Converter } from './converters/{{entity.kebab}}.converter';
+import { {{entity.camel}}Queries } from './queries/{{entity.kebab}}.queries';
+import { {{module.camel}}SearchSchema } from './schema/{{module.kebab}}-search.schema';
+
+export const {{module.pascal}}Page = () => {
+  const { t } = useTranslation(I18N_NAMESPACES.{{module.constant}});
+  const { state: searchState, setState: setSearchState } = useSearchParamsState(
+    {{module.camel}}SearchSchema,
+  );
+  const listQuery = usePaginatedQuery({
+    ...{{entity.camel}}Queries.list({{entity.camel}}Converter.toListParams(searchState)),
+    select: {{entity.camel}}Converter.toPage,
+  });
+
+  return (
+    <>
+      <PageHeader>
+        <PageHeaderContent>
+          <PageHeaderTitle>{t('title')}</PageHeaderTitle>
+          <PageHeaderDescription>{t('description')}</PageHeaderDescription>
+        </PageHeaderContent>
+      </PageHeader>
+      <Flex direction={FLEX_DIRECTIONS.COL} gap={4} className="min-h-0 flex-1">
+        <{{module.pascal}}Table
+          listQuery={listQuery}
+          page={searchState.page}
+          onPageChange={(page) => setSearchState({ page })}
+        />
+      </Flex>
+    </>
+  );
+};

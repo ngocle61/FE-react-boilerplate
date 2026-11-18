@@ -1,0 +1,5 @@
+import type { z } from 'zod';
+
+import type { {{module.camel}}SearchSchema } from '../schema/{{module.kebab}}-search.schema';
+
+export type {{module.pascal}}SearchState = z.infer<typeof {{module.camel}}SearchSchema>;

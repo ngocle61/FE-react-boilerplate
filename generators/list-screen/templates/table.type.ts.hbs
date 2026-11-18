@@ -1,0 +1,9 @@
+import type { PaginatedQueryResult } from '@/shared/types/pagination.type';
+
+import type { {{entity.pascal}}Row } from './{{entity.kebab}}-row.type';
+
+export interface {{module.pascal}}TableProps {
+  listQuery: PaginatedQueryResult<{{entity.pascal}}Row>;
+  page: number;
+  onPageChange: (page: number) => void;
+}

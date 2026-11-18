@@ -1,0 +1,33 @@
+import type { PaginatedResponse } from '@/core/types/pagination.dto';
+import type {
+  {{entity.pascal}}ListItemDto,
+  {{entity.pascal}}ListRequestParams,
+  {{entity.pascal}}ListResponseDto,
+} from '@/core/types/{{entity.kebab}}.dto';
+
+import { {{module.constant}}_PAGE_SIZE } from '../constants/pagination.constant';
+import type { {{entity.pascal}}Row } from '../types/{{entity.kebab}}-row.type';
+import type { {{module.pascal}}SearchState } from '../types/{{module.kebab}}-search.type';
+
+export const {{entity.camel}}Converter = {
+  toRow: (dto: {{entity.pascal}}ListItemDto): {{entity.pascal}}Row => ({
+    id: dto.id,
+{{#each columns}}
+    {{key}}: {{{converter}}},
+{{/each}}
+    raw: dto,
+  }),
+
+  toRows: (dtos: {{entity.pascal}}ListItemDto[]): {{entity.pascal}}Row[] =>
+    dtos.map({{entity.camel}}Converter.toRow),
+
+  toPage: (dto: {{entity.pascal}}ListResponseDto): PaginatedResponse<{{entity.pascal}}Row> => ({
+    ...dto,
+    items: {{entity.camel}}Converter.toRows(dto.items),
+  }),
+
+  toListParams: ({ page }: {{module.pascal}}SearchState): {{entity.pascal}}ListRequestParams => ({
+    page,
+    pageSize: {{module.constant}}_PAGE_SIZE,
+  }),
+};

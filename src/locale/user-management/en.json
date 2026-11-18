@@ -1,0 +1,65 @@
+{
+  "title": "Users",
+  "description": "Manage members and their roles.",
+  "filters": {
+    "searchLabel": "Search users",
+    "searchPlaceholder": "Search by name or email",
+    "roleLabel": "Role",
+    "statusLabel": "Status",
+    "allRoles": "All roles",
+    "allStatuses": "All statuses"
+  },
+  "toolbar": {
+    "newUser": "New user"
+  },
+  "table": {
+    "columns": {
+      "user": "User",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "empty": "No users found.",
+    "totalLabel_one": "{{count}} user",
+    "totalLabel_other": "{{count}} users"
+  },
+  "actions": {
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "cannotModifySelf": "You cannot modify your own account.",
+    "activateSuccess": "User activated.",
+    "deactivateSuccess": "User deactivated."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "form": {
+    "createTitle": "New user",
+    "createDescription": "Create a new member account.",
+    "editTitle": "Edit user",
+    "editDescription": "Update member details.",
+    "emailLabel": "Email",
+    "fullNameLabel": "Full name",
+    "passwordLabel": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "roleLabel": "Role",
+    "statusLabel": "Active",
+    "create": "Create user",
+    "saveChanges": "Save changes",
+    "createSuccess": "User created successfully.",
+    "updateSuccess": "User updated successfully.",
+    "validation": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "fullNameRequired": "Full name is required.",
+      "passwordMin": "Password must be at least {{min}} characters.",
+      "roleRequired": "Select a role.",
+      "tooLong": "Must be {{max}} characters or fewer."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "signIn": {
+    "title": "Chào mừng trở lại",
+    "description": "Đăng nhập bằng email công việc để tiếp tục.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ban@congty.com",
+    "passwordLabel": "Mật khẩu",
+    "passwordPlaceholder": "Nhập mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "submit": "Đăng nhập",
+    "secureNote": "Mật khẩu không bao giờ được lưu dưới dạng văn bản thuần.",
+    "failedTitle": "Đăng nhập thất bại",
+    "sessionExpiredTitle": "Phiên đăng nhập đã hết hạn",
+    "sessionExpiredDescription": "Đăng nhập lại để tiếp tục công việc đang dở.",
+    "validation": {
+      "emailRequired": "Vui lòng nhập email",
+      "emailInvalid": "Email không hợp lệ",
+      "passwordRequired": "Vui lòng nhập mật khẩu"
+    },
+    "demo": {
+      "title": "Tài khoản demo",
+      "description": "Tài khoản có sẵn cho môi trường dev. Chọn vai trò để đăng nhập ngay.",
+      "signInAs": "Đăng nhập với vai trò {{role}}"
+    }
+  }
+}

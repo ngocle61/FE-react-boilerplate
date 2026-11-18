@@ -1,0 +1,11 @@
+{
+  "title": "Trò chuyện AI",
+  "description": "Đặt câu hỏi và nhận câu trả lời từ trợ lý AI.",
+  "emptyMessages": "Chưa có tin nhắn nào. Hãy chào nhé!",
+  "typing": "Đang trả lời…",
+  "inputPlaceholder": "Nhập câu hỏi…",
+  "send": "Gửi",
+  "contextLabel": "Về: {{label}}",
+  "clearContext": "Về trò chuyện chung",
+  "stop": "Dừng"
+}

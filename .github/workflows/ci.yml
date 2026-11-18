@@ -1,0 +1,75 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: FE-react-boilerplate
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: FE-react-boilerplate
+
+      # api:generate reads ../BE-nestjs-boilerplate/openapi.json, so the BE goes next to the FE,
+      # on the branch this change targets.
+      - uses: actions/checkout@v7
+        with:
+          repository: ngocle61/BE-nestjs-boilerplate
+          ref: ${{ github.base_ref || github.ref_name }}
+          path: BE-nestjs-boilerplate
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: FE-react-boilerplate/package-lock.json
+
+      - run: npm ci
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: API contract matches the BE openapi.json
+        run: npm run api:generate && git diff --exit-code -- src/core/contract
+
+      - name: Typecheck, lint and tests with coverage thresholds
+        run: npm run verify
+
+      - name: Production build
+        run: npm run build
+
+      - name: Bundle budget
+        run: npm run size
+
+  deploy:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+    steps:
+      - name: Trigger the host's deploy hook
+        if: env.DEPLOY_HOOK_URL != ''
+        run: curl --fail --silent --show-error --request POST "$DEPLOY_HOOK_URL"
+
+      - name: Report that no deploy hook is configured
+        if: env.DEPLOY_HOOK_URL == ''
+        run: echo "::notice::DEPLOY_HOOK_URL secret is not set, skipping deploy"

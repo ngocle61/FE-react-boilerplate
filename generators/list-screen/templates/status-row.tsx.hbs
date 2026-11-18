@@ -1,0 +1,14 @@
+import { Flex, FLEX_JUSTIFICATIONS, TableCell, TableRow } from '@ui';
+
+import { {{module.constant}}_TABLE_COLUMN_COUNT } from '../../../constants/{{module.kebab}}-table.constant';
+import type { {{module.pascal}}StatusRowProps } from '../../../types/{{module.kebab}}-status-row.type';
+
+export const {{module.pascal}}StatusRow = ({ children }: {{module.pascal}}StatusRowProps) => (
+  <TableRow>
+    <TableCell colSpan={ {{module.constant}}_TABLE_COLUMN_COUNT }>
+      <Flex justify={FLEX_JUSTIFICATIONS.CENTER} className="py-8">
+        {children}
+      </Flex>
+    </TableCell>
+  </TableRow>
+);

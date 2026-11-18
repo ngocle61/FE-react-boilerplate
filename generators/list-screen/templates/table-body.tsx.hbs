@@ -1,0 +1,42 @@
+import { useTranslation } from 'react-i18next';
+
+import { I18N_NAMESPACES } from '@/core/constants/language.constant';
+import { QUERY_STATES } from '@/shared/constants/query-state.constant';
+import { Spinner, TableBody } from '@ui';
+
+import type { {{module.pascal}}TableBodyProps } from '../../../types/{{module.kebab}}-table-body.type';
+import { {{module.pascal}}StatusRow } from './{{module.kebab}}-status-row';
+import { {{module.pascal}}TableRow } from './{{module.kebab}}-table-row';
+
+export const {{module.pascal}}TableBody = ({ queryState, rows }: {{module.pascal}}TableBodyProps) => {
+  const { t } = useTranslation(I18N_NAMESPACES.{{module.constant}});
+
+  switch (queryState) {
+    case QUERY_STATES.LOADING:
+      return (
+        <TableBody>
+          <{{module.pascal}}StatusRow>
+            <Spinner className="size-6 text-muted-foreground" />
+          </{{module.pascal}}StatusRow>
+        </TableBody>
+      );
+
+    case QUERY_STATES.EMPTY:
+      return (
+        <TableBody>
+          <{{module.pascal}}StatusRow>
+            <p className="text-sm text-muted-foreground">{t('table.empty')}</p>
+          </{{module.pascal}}StatusRow>
+        </TableBody>
+      );
+
+    default:
+      return (
+        <TableBody>
+          {rows.map((row) => (
+            <{{module.pascal}}TableRow key={row.id} row={row} />
+          ))}
+        </TableBody>
+      );
+  }
+};

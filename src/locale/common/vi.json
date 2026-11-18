@@ -1,0 +1,105 @@
+{
+  "app": {
+    "tagline": "Boilerplate"
+  },
+  "authBrand": {
+    "tagline": "Một không gian làm việc cho lịch hẹn, trao đổi và phân quyền của cả đội.",
+    "featuresLabel": "Tính năng chính",
+    "features": {
+      "access": "Phân quyền theo vai trò",
+      "calendar": "Lịch & lập kế hoạch",
+      "chat": "Trò chuyện nhóm & AI",
+      "dashboard": "Tổng quan & báo cáo"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "workspace": "Không gian làm việc",
+      "administration": "Quản trị"
+    },
+    "items": {
+      "dashboard": "Tổng quan",
+      "chat": "Trò chuyện AI",
+      "calendar": "Lịch",
+      "users": "Người dùng",
+      "interventionCall": "Gọi khách hàng"
+    }
+  },
+  "actions": {
+    "cancel": "Hủy",
+    "retry": "Thử lại",
+    "reload": "Tải lại trang",
+    "goHome": "Về trang chủ",
+    "close": "Đóng"
+  },
+  "account": {
+    "signOut": "Đăng xuất"
+  },
+  "signOut": {
+    "title": "Đăng xuất?",
+    "description": "Bạn sẽ cần đăng nhập lại để truy cập không gian làm việc.",
+    "confirm": "Đăng xuất"
+  },
+  "theme": {
+    "label": "Giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Theo hệ thống"
+  },
+  "language": {
+    "label": "Ngôn ngữ"
+  },
+  "roles": {
+    "ADMIN": "Quản trị viên",
+    "MEMBER": "Thành viên",
+    "VIEWER": "Người xem"
+  },
+  "status": {
+    "loading": "Đang tải trang",
+    "forbidden": {
+      "title": "Không có quyền truy cập",
+      "description": "Vai trò của bạn không được phép mở trang này."
+    },
+    "notFound": {
+      "title": "Không tìm thấy trang",
+      "description": "Trang bạn tìm không tồn tại hoặc đã được di chuyển."
+    },
+    "error": {
+      "title": "Đã xảy ra lỗi",
+      "description": "Có lỗi không mong muốn khi hiển thị trang này."
+    },
+    "chunk": {
+      "title": "Đã có phiên bản mới",
+      "description": "Tải lại trang để dùng phiên bản mới nhất của ứng dụng."
+    }
+  },
+  "queryState": {
+    "errorTitle": "Không thể tải dữ liệu",
+    "errorDescription": "Kiểm tra kết nối mạng và thử lại."
+  },
+  "comingSoon": {
+    "title": "Sắp ra mắt"
+  },
+  "filterBar": {
+    "trigger": "Bộ lọc",
+    "dialogTitle": "Bộ lọc",
+    "dialogDescription": "Thu hẹp danh sách rồi áp dụng thay đổi.",
+    "apply": "Áp dụng",
+    "clearAll": "Xóa bộ lọc"
+  },
+  "pagination": {
+    "navigation": "Phân trang",
+    "previous": "Trước",
+    "next": "Sau",
+    "previousPage": "Về trang trước",
+    "nextPage": "Sang trang sau",
+    "page": "Trang {{page}}",
+    "more": "Các trang khác"
+  },
+  "multiSelect": {
+    "searchPlaceholder": "Tìm kiếm…",
+    "empty": "Không có kết quả.",
+    "remove": "Bỏ chọn",
+    "clear": "Bỏ chọn tất cả"
+  }
+}
