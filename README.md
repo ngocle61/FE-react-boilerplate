@@ -77,13 +77,16 @@ src/
 │   ├── libs/            i18n, query client
 │   └── types/ utils/ converters/
 ├── shared/              App shell: layouts, sidebar, header, status pages, Can, QueryState, PageHeader
+│   └── domains/<domain>/   Components, queries and converters of a domain used by two or more modules
 ├── modules/             One folder per feature (authentication, dashboard, chat, calendar, user-management)
 ├── router/              routes.tsx tree + one <module>-routes.ts per module
 ├── locale/<ns>/{en,vi}.json
 └── test/                Every test, mirroring the src/ path it covers, plus setup and fixtures
 ```
 
-Imports between layers are enforced by `eslint-plugin-boundaries`: `_widgets` imports nothing from the app, `core` never imports UI, `shared` never imports modules, and modules never import each other.
+Imports between layers are enforced by `eslint-plugin-boundaries`: `_widgets` imports nothing from the app, `core` never imports UI, `shared` never imports modules, and modules never import each other. Code that two modules need moves to a domain slice in `src/shared/domains/` ([Rule 39](./global-skill-agent/structure.md)).
+
+A module with several sidebar entries has no root page: each entry is a screen folder at the module root, screens reached from it nest inside it, and a component shared by several screens sits in the `components/` of the lowest screen that holds them all ([Rule 28](./global-skill-agent/structure.md)). File names follow [Rule 40](./global-skill-agent/structure.md): `<entity>.api.ts`, `<entity>.service.ts`, `<entity>.queries.ts`, `<name>.converter.ts`, `<name>.schema.ts`, `<name>.type.ts`, `<name>.constant.ts`, `<name>.util.ts`, `use-<name>.ts`.
 
 ## Routing and access
 
@@ -102,6 +105,8 @@ root
 - Anonymous users are sent to `/sign-in?redirect=<path>` and returned there after signing in. The redirect is validated and dropped after an explicit sign-out.
 - A missing permission renders the access denied page in place, keeping the URL and the shell.
 - `ROUTE_ACCESS` is shared by the router and the sidebar, so a hidden menu item and a blocked route can never drift apart.
+- A module with several entries is one sidebar parent with a child per entry. The parent shows only the children the user may open, links to the first of them, and disappears when none is left.
+- Tenant types, plans and feature flags that hide modules resolve into the permission list, so every route keeps a single guard.
 - Inside pages, gate actions with `<Can permissions={[PERMISSIONS.CALENDAR_MANAGE]}>` or `useAccess().can(...)`. Never compare role names.
 - If the backend returns `permissions` on the user, they override the local `ROLE_PERMISSIONS` policy.
 - A session ends only when the server rejects the refresh token (401 or 403). A network error or a 5xx during a refresh keeps the session, and the failed request can be retried.
@@ -146,7 +151,7 @@ For any other kind of module:
 4. Create `src/router/routes/<module>-routes.ts` with `createGuardedRoute` and spread it into `routes.tsx`.
 5. Add the sidebar entry to `NAVIGATION_GROUPS`.
 
-The full conventions live in [global-skill-agent/routing.md](./global-skill-agent/routing.md).
+A module with several sidebar entries repeats steps 1, 2 and 5 for each entry and keeps one route file. The full conventions live in [global-skill-agent/routing.md](./global-skill-agent/routing.md).
 
 ## Connecting a real backend
 

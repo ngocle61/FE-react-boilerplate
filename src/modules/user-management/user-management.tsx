@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { I18N_NAMESPACES } from '@/core/constants/language.constant';
+import { PageBody } from '@/shared/components/page-body/page-body';
 import {
   PageHeader,
   PageHeaderContent,
@@ -11,7 +12,6 @@ import { useDialogTarget } from '@/shared/hooks/use-dialog-target';
 import { useDisclosure } from '@/shared/hooks/use-disclosure';
 import { usePaginatedQuery } from '@/shared/hooks/use-paginated-query';
 import { useSearchParamsState } from '@/shared/hooks/use-search-params-state';
-import { Flex, FLEX_DIRECTIONS } from '@ui';
 
 import { UserManagementDialogs } from './components/user-management-dialogs/user-management-dialogs';
 import { UserManagementTable } from './components/user-management-table/user-management-table';
@@ -42,7 +42,7 @@ export const UserManagementPage = () => {
           <PageHeaderDescription>{t('description')}</PageHeaderDescription>
         </PageHeaderContent>
       </PageHeader>
-      <Flex direction={FLEX_DIRECTIONS.COL} gap={4} className="min-h-0 flex-1">
+      <PageBody>
         <UserManagementToolbar onNewClick={createDialog.open} />
         <UserManagementTable
           users={usersQuery}
@@ -50,7 +50,7 @@ export const UserManagementPage = () => {
           onPageChange={(page) => setSearchState({ page })}
           onEditRequest={editDialog.open}
         />
-      </Flex>
+      </PageBody>
       <UserManagementDialogs
         isCreateOpen={createDialog.isOpen}
         onCreateOpenChange={createDialog.setIsOpen}

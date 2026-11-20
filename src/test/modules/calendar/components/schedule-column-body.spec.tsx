@@ -9,8 +9,7 @@ import {
 } from '@/modules/calendar/constants/calendar.constant';
 import { useInterventionDragStore } from '@/modules/calendar/hooks/use-intervention-drag';
 import type { InterventionRow } from '@/modules/calendar/types/intervention-row.type';
-import { DRAG_EFFECTS } from '@/shared/constants/drag-and-drop.constant';
-import { DRAG_EVENT_TYPES } from '@/shared/constants/drag-and-drop.constant';
+import { DRAG_EFFECTS, DRAG_EVENT_TYPES } from '@/shared/constants/drag-and-drop.constant';
 import { MINUTES_PER_HOUR } from '@/shared/constants/time.constant';
 import type { DragEventType } from '@/shared/types/drag-and-drop.type';
 

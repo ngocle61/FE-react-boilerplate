@@ -1,1 +1,1 @@
-export const toTelHref = (phone: string): string => `tel:${phone.replace(/[^\d+]/g, '')}`;
+export const toTelHref = (phone: string): string => `tel:${phone.replaceAll(/[^\d+]/g, '')}`;

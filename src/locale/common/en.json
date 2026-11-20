@@ -23,7 +23,8 @@
       "calendar": "Calendar",
       "users": "Users",
       "interventionCall": "Call client"
-    }
+    },
+    "toggleSection": "Show or hide {{section}}"
   },
   "actions": {
     "cancel": "Cancel",

@@ -15,6 +15,7 @@ import { reactBody } from './eslint/react-body.plugin.js';
 const ELEMENTS = [
   { type: 'core', pattern: 'src/core' },
   { type: 'ui', pattern: 'src/_widgets' },
+  { type: 'domain', pattern: 'src/shared/domains/*', capture: ['name'] },
   { type: 'shared', pattern: 'src/shared' },
   { type: 'module', pattern: 'src/modules/*', capture: ['name'] },
   { type: 'router', pattern: 'src/router' },
@@ -65,6 +66,36 @@ const RHF_CONTROLLER_IMPORT = {
   message:
     'Screens never render a Controller (Rule 23). Use a field from @ui/form, or add one there.',
 };
+
+const SHARED_UI_IMPORTS = [
+  {
+    group: ['@/core/apis/*'],
+    message:
+      'Shared components and layouts are presentational (Rule 3). Load data in a module or a domain slice and pass it in.',
+  },
+  {
+    group: ['@/shared/domains/*'],
+    message:
+      'Shared components and layouts know no domain (Rule 39). Domain UI lives in src/shared/domains/<domain>/components.',
+  },
+];
+
+const CLEAN_CODE_SYNTAX = [
+  {
+    selector: 'IfStatement > IfStatement.alternate',
+    message:
+      'Three or more branches are a switch, or switch (true) for boolean conditions (Rule 41).',
+  },
+  {
+    selector: "CallExpression[callee.property.name='replace'][arguments.0.regex.flags=/g/]",
+    message: 'Use replaceAll for a global replacement (Rule 42).',
+  },
+];
+
+const NUMBER_GLOBALS = ['isNaN', 'isFinite', 'parseInt', 'parseFloat'].map((name) => ({
+  name,
+  message: `Use Number.${name} (Rule 42).`,
+}));
 
 const forbid = (from, to, message) => ({
   from: { element: { type: from } },
@@ -133,18 +164,23 @@ export default defineConfig([
           policies: [
             forbid(
               'ui',
-              ['core', 'shared', 'module', 'router'],
+              ['core', 'domain', 'shared', 'module', 'router'],
               'src/_widgets holds design-system primitives only. Pass data in through props.',
             ),
             forbid(
               'core',
-              ['ui', 'shared', 'module', 'router'],
+              ['ui', 'domain', 'shared', 'module', 'router'],
               'src/core must stay framework-level. Move UI to src/shared and features to src/modules.',
             ),
             forbid(
               'shared',
+              ['domain', 'module', 'router'],
+              'Generic src/shared code cannot depend on a domain slice, a feature module or the router (Rule 39).',
+            ),
+            forbid(
+              'domain',
               ['module', 'router'],
-              'src/shared cannot depend on a feature module or the router.',
+              'A domain slice cannot import a feature module or the router. Modules import the slice, never the other way (Rule 39).',
             ),
             forbid(
               'module',
@@ -164,11 +200,30 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/modules/**/*.tsx'],
+    files: ['src/modules/**/*.tsx', 'src/shared/domains/**/*.tsx'],
     plugins: { naming },
     rules: {
       'naming/component-file-suffix': 'error',
       'naming/screen-import-scope': 'error',
+    },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/_widgets/**', 'src/test/**'],
+    plugins: { naming },
+    rules: {
+      'naming/support-file-name': 'error',
+    },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      'no-nested-ternary': 'error',
+      'no-param-reassign': 'error',
+      'no-restricted-globals': ['error', ...NUMBER_GLOBALS],
+      'no-restricted-syntax': ['error', ...CLEAN_CODE_SYNTAX],
+      '@typescript-eslint/prefer-optional-chain': 'error',
+      'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
     },
   },
   {
@@ -210,6 +265,18 @@ export default defineConfig([
         {
           paths: [...RAW_HTTP_IMPORTS, APP_REACT_IMPORTS, RHF_CONTROLLER_IMPORT],
           patterns: [DESIGN_SYSTEM_DEEP_IMPORT],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/shared/components/**/*.{ts,tsx}', 'src/shared/layout/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [...RAW_HTTP_IMPORTS, APP_REACT_IMPORTS, RHF_CONTROLLER_IMPORT],
+          patterns: [DESIGN_SYSTEM_DEEP_IMPORT, ...SHARED_UI_IMPORTS],
         },
       ],
     },

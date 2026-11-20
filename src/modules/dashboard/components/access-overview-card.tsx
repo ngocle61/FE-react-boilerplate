@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { I18N_NAMESPACES } from '@/core/constants/language.constant';
 import { useAccess } from '@/core/hooks/use-access';
 import { NAVIGATION_GROUPS } from '@/shared/constants/navigation.constant';
+import { flattenNavigationItems } from '@/shared/utils/navigation.util';
 import {
   Badge,
   BADGE_VARIANTS,
@@ -26,7 +27,7 @@ export const AccessOverviewCard = () => {
   const { t } = useTranslation([I18N_NAMESPACES.DASHBOARD, I18N_NAMESPACES.COMMON]);
   const { can } = useAccess();
 
-  const items = NAVIGATION_GROUPS.flatMap((group) => group.items);
+  const items = flattenNavigationItems(NAVIGATION_GROUPS);
 
   return (
     <Card>

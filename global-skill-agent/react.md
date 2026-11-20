@@ -5,7 +5,7 @@ Part of the project's mandatory implementation rules (see [README.md](./README.m
 
 ### Rule 3 - No API Calls in Shared Components
 
-Never make API calls in `src/shared/components` because all components there are dumb/presentational components.
+Never make API calls in `src/shared/components` or `src/shared/layout` because all components there are dumb/presentational components. Lint rejects `@/core/apis` and `@/shared/domains` imports there. A component that two or more modules render and that loads its own data belongs to a domain slice in `src/shared/domains/<domain>/components/` (Rule 39).
 
 ---
 

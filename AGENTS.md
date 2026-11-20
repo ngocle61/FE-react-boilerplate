@@ -22,12 +22,13 @@ React 19 · TypeScript 7 (`tsc`, with the TypeScript 6 API kept for typescript-e
 
 ## Layers
 
-| Folder          | Holds                                                                                                                                                             | May import                   |
-| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
-| `src/_widgets`  | Design-system primitives (`ui/`, imported via `@ui`) and form fields (`ui/form/`, imported via `@ui/form`)                                                        | external libs only           |
-| `src/core`      | API client, every `<entity>.api.ts`, the generated contract (`contract/`) and the DTOs inferred from it, interceptors, stores, guards, access policy, i18n, types | `_widgets` is not allowed    |
-| `src/shared`    | Presentational components, layouts, navigation config, shared hooks                                                                                               | `core`, `_widgets`           |
-| `src/modules/*` | One feature per folder, laid out as a component tree                                                                                                              | `core`, `shared`, `_widgets` |
-| `src/router`    | Route tree and per-module route files                                                                                                                             | everything above             |
+| Folder                 | Holds                                                                                                                                                             | May import                                 |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- |
+| `src/_widgets`         | Design-system primitives (`ui/`, imported via `@ui`) and form fields (`ui/form/`, imported via `@ui/form`)                                                        | external libs only                         |
+| `src/core`             | API client, every `<entity>.api.ts`, the generated contract (`contract/`) and the DTOs inferred from it, interceptors, stores, guards, access policy, i18n, types | `_widgets` is not allowed                  |
+| `src/shared`           | Presentational components, layouts, navigation config, shared hooks, all domain-free                                                                              | `core`, `_widgets`                         |
+| `src/shared/domains/*` | One domain slice per folder: the components, queries, services and converters of a domain that two or more modules use (Rule 39)                                  | `core`, `shared`, other slices, `_widgets` |
+| `src/modules/*`        | One feature per folder, laid out as a component tree; a module with several sidebar entries has one screen folder per entry (Rule 28)                             | `core`, `shared`, slices, `_widgets`       |
+| `src/router`           | Route tree and per-module route files                                                                                                                             | everything above                           |
 
-The boundaries are enforced by `eslint-plugin-boundaries`; see `eslint.config.js`.
+The boundaries are enforced by `eslint-plugin-boundaries`; see `eslint.config.js`. File names per folder follow Rule 40 and are checked by `naming/support-file-name`.

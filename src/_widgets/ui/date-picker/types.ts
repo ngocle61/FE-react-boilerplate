@@ -13,7 +13,7 @@ type DatePickerTriggerBaseProps = Omit<
 export type DatePickerTriggerProps = Omit<ButtonProps, 'asChild' | 'variant' | 'size'>;
 
 export interface DatePickerProps extends DatePickerTriggerBaseProps {
-  value?: Maybe<Date>;
+  value?: Date;
   onValueChange?: (value: Maybe<Date>) => void;
   placeholder?: string;
   formatStr?: string;
@@ -22,7 +22,7 @@ export interface DatePickerProps extends DatePickerTriggerBaseProps {
 }
 
 export interface DateRangePickerProps extends DatePickerTriggerBaseProps {
-  value?: Maybe<DateRange>;
+  value?: DateRange;
   onValueChange?: (value: Maybe<DateRange>) => void;
   placeholder?: string;
   formatStr?: string;

@@ -1,4 +1,4 @@
-import type { NavigationGroup } from '../../types/navigation.type';
+import type { NavigationGroup, NavigationParentItem } from '../../types/navigation.type';
 
 export interface AppSidebarProps {
   onSignOut: () => void;
@@ -6,6 +6,10 @@ export interface AppSidebarProps {
 
 export interface AppSidebarNavProps {
   groups: readonly NavigationGroup[];
+}
+
+export interface AppSidebarNavParentProps {
+  item: NavigationParentItem;
 }
 
 export interface AppSidebarUserProps {

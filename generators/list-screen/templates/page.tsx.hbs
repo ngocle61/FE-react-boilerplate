@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { I18N_NAMESPACES } from '@/core/constants/language.constant';
+import { PageBody } from '@/shared/components/page-body/page-body';
 import {
   PageHeader,
   PageHeaderContent,
@@ -9,7 +10,6 @@ import {
 } from '@/shared/components/page-header/page-header';
 import { usePaginatedQuery } from '@/shared/hooks/use-paginated-query';
 import { useSearchParamsState } from '@/shared/hooks/use-search-params-state';
-import { Flex, FLEX_DIRECTIONS } from '@ui';
 
 import { {{module.pascal}}Table } from './components/{{module.kebab}}-table/{{module.kebab}}-table';
 import { {{entity.camel}}Converter } from './converters/{{entity.kebab}}.converter';
@@ -34,13 +34,13 @@ export const {{module.pascal}}Page = () => {
           <PageHeaderDescription>{t('description')}</PageHeaderDescription>
         </PageHeaderContent>
       </PageHeader>
-      <Flex direction={FLEX_DIRECTIONS.COL} gap={4} className="min-h-0 flex-1">
+      <PageBody>
         <{{module.pascal}}Table
           listQuery={listQuery}
           page={searchState.page}
           onPageChange={(page) => setSearchState({ page })}
         />
-      </Flex>
+      </PageBody>
     </>
   );
 };

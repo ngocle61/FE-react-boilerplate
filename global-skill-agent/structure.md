@@ -72,14 +72,15 @@ src/_widgets/
 - **Feature isolation**: Organise components and code inside `src/modules` by domain features.
 - **Service-Query-Converter structure**: Follow a clean separation of concerns within each module folder. Data flows `core/apis → services → queries → hooks (select: converter) → components`:
   - **No `apis/` in a module**: Every `<entity>.api.ts` object (e.g., `clientApi`) lives in `src/core/apis/`. Each method is one `apiClient` call to an `API_ENDPOINTS` path, typed with the wire DTO, returning the `AxiosResponse`. A method whose response has a body passes the generated schema as `responseSchema` (Rule 37). Read methods take an optional `signal: AbortSignal` and pass it to axios. No logic. The wire types it uses (`<Entity>Dto`, `Create<Entity>Payload`, `<Entity>ListRequestParams`) live in `src/core/types/<entity>.dto.ts`, inferred from the generated contract, because core never imports from modules (Rule 8). Modules, shared and the router never import `axios`, `apiClient` or `streamClient` (enforced by `no-restricted-imports`).
-  - **`{module-name}.tsx`**: The module page and the only file at the module root, so opening the module folder shows the overview of the whole module first. It orchestrates the components with layout primitives (e.g., `PageHeader`, `QueryState`) and hooks (e.g., `useSignIn`).
-  - **`components/`**: Every component the page renders, laid out as the render tree (Rule 28): a component that renders children gets a folder holding it and its children; a leaf is a plain file in its parent's folder. Components rendered by several parents are flat files directly in `components/`.
+  - **`{module-name}.tsx`**: The module page and the only file at the module root, so opening the module folder shows the overview of the whole module first. It orchestrates the components with layout primitives (e.g., `PageHeader`, `QueryState`) and hooks (e.g., `useSignIn`). A module with several sidebar entries has no root page: each entry is a screen folder at the root (Rule 28).
+  - **`components/`**: Every component the page renders, laid out as the render tree (Rule 28): a component that renders children gets a folder holding it and its children; a leaf is a plain file in its parent's folder. Components rendered by several parents are flat files in the `components/` of the lowest screen that holds them all.
   - **`services/`**: Async handlers that call `@/core/apis/<entity>.api`, unwrap `data`, map UI query params to their wire format, and run business steps (stream parsing, store sync, session start). They return DTOs; they only apply a converter when the result leaves React Query (e.g., written to a store).
   - **`queries/`**: One `<entity>.queries.ts` factory object (e.g., `clientQueries`) built with `queryOptions`: `all()` returns the root key for invalidation, `list(params)` / `detail(id)` return the key and a `queryFn` that forwards the `signal` to the service. Keys are built from `as const` constants (`<MODULE>_QUERY_KEYS`, `QUERY_SCOPES`), never inline strings.
   - **`converters/`**: Pure mapper objects (e.g., `clientConverter`) to map backend DTOs to UI models (`toRow`, `toRows`, `toFormValues`, `toOptions`) and convert UI form states to write payloads (`toCreatePayload`, `toUpdatePayload`). Read converters run in the query hook's `select` (`useQuery({ ...clientQueries.list(), select: clientConverter.toOptions })`), so the cache keeps the DTO and each hook derives its own shape.
   - **`schema/`**: Form validation schemas (e.g., Zod schemas).
   - **`types/`**: Pure interfaces and typings.
 - **Conditional sub-directories**: Module sub-directories must only be created when they actually contain files used by the module.
+- **Code for several modules leaves the module**: Modules never import each other. When a second module needs a component, hook, query or converter, move it to `src/shared` per Rule 39 instead of copying it.
 
 #### Rule 2 Layout Example
 
@@ -220,16 +221,17 @@ Applies to every module.
 **The folder tree is the render tree.** Opening a module folder shows its page file first — the overview of the whole module. Opening `components/` then walks the same tree React renders: the sections the page lays out, the widgets each section drops in, the parts each widget is built from. A component's folder holds the component and the folders of the components it renders, so the explorer reads like the node tree in React DevTools. A flat list of components does not say which one belongs to which parent — that is the failure this rule exists to prevent.
 
 - **The page file is alone at the top**: `<module>/<module>.tsx` is the only file at the module root (`calendar/calendar.tsx`). Everything else at the root is a folder: `components/`, other screens, and the support folders. Never repeat the module name as a folder inside itself — `calendar/calendar/` is wrong.
+- **A module with several sidebar entries has no root page**: When the module is a sidebar group (one `NAVIGATION_GROUPS` group, or several items under one route prefix) and no route renders the module itself, the root holds no `.tsx` file. Each entry is a screen folder at the root, named after its page: `product-management/product-list/product-list.tsx`, `product-management/production-report/production-report.tsx`. `authentication/sign-in/` is the smallest case. Never add an empty `<module>.tsx` that only redirects.
 - **A component has to earn its file**: Extract a component only when it owns state, hooks with their own data or logic, or a meaningful chunk of markup, or when several parents render it. A heading with its description, a single note line, or any other static markup the parent can show in a few lines stays inline in the parent. The tree mirrors real components, not every visual region. `sign-in.tsx` keeps its title block and secure note inline and extracts only `SignInForm`, `SessionExpiredBanner` and `DemoAccountsList`.
 - **Folders only for parents**: A component that renders child components gets a folder, `…/<name>/<name>.tsx`, holding its children. A leaf — a component that renders no child component of its own — is a plain file in its parent's folder (`user-management-table-row/user-role-badge.tsx`), never wrapped in a folder of its own. A leaf the page renders directly is a file directly in `components/`. Nothing sits next to the page.
 - **Nest by render**: A component sits inside the folder of the component that renders it (`intervention-dialogs/intervention-form/intervention-form.tsx`, `intervention-dialogs/intervention-delete-dialog.tsx`). Components rendered directly by the page sit directly in `components/`.
-- **Shared components are flat files in `components/`**: A component rendered by two or more parents — in any branch or screen of the module — is a plain file directly in the module's `components/`, without its own folder. `technician-schedule-list` and `combined-schedule-list` both render `schedule-column-body`, so it is `components/schedule-column-body.tsx`; the components only a shared component renders are flat files beside it (`components/drop-slot-preview.tsx`). There is no `shared/` folder anywhere in a module, and a component with a single parent never sits outside its parent's folder.
-- **Other screens are folders with their own tree**: Another route in the module is a folder named after its page, holding `<screen-name>.tsx` and its own `components/` (`intervention-call/intervention-call.tsx`, `intervention-call/components/`). A screen reached from another screen nests inside that screen's folder, mirroring the route; a module with several sidebar entries gives each entry its own folder. Components used by several screens are flat files in the module's `components/`.
-- **A file only reaches down, or into the shared flat files**: A file may import its own subtree (a leaf has none), the flat files in the module's `components/`, or module support code (`hooks/`, `utils/`, `types/`, `converters/`, `services/`, `queries/`, `schema/`, `constants/`). Never sideways into a sibling branch or another screen. Enforced by `naming/screen-import-scope` in `eslint/naming.plugin.js`.
-- **Support folders stay at the module root**: `hooks/`, `utils/`, `types/`, `converters/`, `services/`, `queries/`, `schema/`, `constants/` are not part of the tree and are exempt from the naming rules.
+- **Shared components are flat files at the lowest common screen**: A component rendered by two or more parents is a plain file, without its own folder, in the `components/` of the lowest screen whose folder holds every parent. Inside one screen that is the screen's own `components/`: `technician-schedule-list` and `combined-schedule-list` both render `schedule-column-body`, so it is `components/schedule-column-body.tsx`; the components only a shared component renders are flat files beside it (`components/drop-slot-preview.tsx`). Two screens under `product-details/` share through `product-details/components/`; two sidebar entries share through the module's `components/`. There is no `shared/` folder anywhere in a module, and a component with a single parent never sits outside its parent's folder.
+- **Other screens are folders with their own tree**: Another route in the module is a folder named after its page, holding `<screen-name>.tsx` and its own `components/` (`intervention-call/intervention-call.tsx`, `intervention-call/components/`). A screen reached from another screen nests inside that screen's folder, mirroring the route: `/products/:id/blends/:blendId` lives at `product-list/product-details/blend-details/`. Check the tree against the module's route file in `src/router/routes/` and its `NAVIGATION_GROUPS` items, not against a file listing.
+- **A file only reaches down, or up into shared flat files**: A file may import its own subtree (a leaf has none), the flat files in the `components/` of any screen above it, the support code at the module root, or the support code of the top-level screen it belongs to. Never sideways into a sibling branch or another screen. Enforced by `naming/screen-import-scope` in `eslint/naming.plugin.js`.
+- **Support folders sit at the module root, or in a top-level screen**: `hooks/`, `utils/`, `types/`, `converters/`, `services/`, `queries/`, `schema/`, `constants/` are not part of the tree and are exempt from the component naming rules. They live at the module root. A screen folder directly under the root (a sidebar entry) may hold its own support folders for code that only its subtree uses (`product-management/production-report/hooks/`); move the file to the module root when a second entry needs it. Support folders never sit deeper, never inside `components/`. Enforced by `naming/support-file-name`.
 - **One component per file**: A file exports exactly one component, named after the file (extends Rule 12).
 - **Non-components leave the tree**: Formatters, calculations, and other pure helpers belong in `utils/` per Rule 10, even when only one component uses them.
-- **Role suffix encodes the level**: Every component file name ends with a role suffix from the closed vocabulary below; page files are exempt because they are named after their folder. `naming/component-file-suffix` in `eslint/naming.plugin.js` enforces the suffix, folders only for components with children, leaves inside their parent's folder, that no `shared/` folder exists, and that only page files sit outside `components/`.
+- **Role suffix encodes the level**: Every component file name ends with a role suffix from the closed vocabulary below; page files are exempt because they are named after their folder. `naming/component-file-suffix` in `eslint/naming.plugin.js` enforces the suffix, folders only for components with children, leaves inside their parent's folder, that no `shared/` folder exists, and that only page files sit outside `components/`. The same checks run on the domain slices in `src/shared/domains/` (Rule 39).
 
 | Tier    | Meaning                                         | Allowed suffixes                                                                                                                   |
 | ------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -305,6 +307,65 @@ src/modules/calendar/
               └── intervention-card/    shared component wrapped in folders
 ```
 
+#### Rule 28 Layout Example: a Module With Several Sidebar Entries
+
+Sidebar group `Product Management` has two entries. `Product List` opens the product table, a row opens a product, and a product opens its blends; `Production Report` opens the daily report. Excerpt.
+
+✅ **Correct**
+
+```text
+src/modules/product-management/                     no root page: the module is a sidebar group
+  ├── product-list/                                 /products
+  │     ├── product-list.tsx
+  │     ├── components/
+  │     │     ├── product-filters.tsx
+  │     │     ├── product-table/
+  │     │     │     ├── product-table.tsx
+  │     │     │     └── product-table-row.tsx
+  │     │     └── quality-spec-table.tsx            shared: product-list + product-builder
+  │     ├── product-builder/                        /products/new
+  │     │     ├── product-builder.tsx
+  │     │     └── components/
+  │     └── product-details/                        /products/:productId
+  │           ├── product-details.tsx
+  │           ├── components/
+  │           │     ├── product-details-header.tsx
+  │           │     └── read-only-field.tsx         shared: product-details + its child screens
+  │           ├── product-edit/                     /products/:productId/edit
+  │           └── blend-details/                    /products/:productId/blends/:blendId
+  ├── production-report/                            /products/production-report
+  │     ├── production-report.tsx
+  │     ├── components/
+  │     ├── hooks/                                  only production-report uses these
+  │     │     └── use-production-report-kpis.ts
+  │     └── utils/
+  ├── components/
+  │     └── product-status-badge.tsx                shared: both entries
+  ├── constants/
+  ├── converters/
+  ├── hooks/
+  ├── queries/
+  ├── schema/
+  ├── services/
+  ├── types/
+  └── utils/
+```
+
+❌ **Incorrect**
+
+```text
+src/modules/product-management/
+  ├── product-management.tsx            empty page that only redirects to an entry
+  ├── product-list.tsx                  screens as a flat list of pages at the root
+  ├── product-details.tsx
+  ├── components/
+  │     └── read-only-field.tsx         only product-details screens use it: product-details/components/
+  └── product-list/
+        └── product-details/
+              └── components/
+                    └── hooks/          support folder inside components/
+```
+
 ---
 
 ### Rule 37 - The API Contract Is Generated, and Every Response Is Parsed
@@ -330,3 +391,95 @@ FE  response-contract.interceptor  parses response.data; a mismatch becomes Http
 - **Every body is parsed at the boundary**: Pass `responseSchema` on every `apiClient` call that returns a body. Calls that bypass `apiClient` (the token refresh, SSE frames) call `parseContract(schema, data, status)` from `@/core/utils/contract.util` themselves. Parsed objects drop unknown fields, so additive BE changes never break the FE.
 - **A contract error is not retried**: It carries the HTTP status of the response it rejected (2xx), so `shouldRetryQuery` does not retry it, the global mutation toast shows `errors:contractMismatch`, and `error.cause` holds the `ZodError` for debugging.
 - **Response schemas describe JSON, not Prisma**: Dates are `z.date()` in the BE schema and arrive as ISO strings (`z.iso.datetime()`) in the FE; ids are `z.string()` (not `z.uuid()`) so seeded or legacy ids never fail parsing.
+
+---
+
+### Rule 39 - Code Shared Between Modules
+
+Modules never import each other (`boundaries`). Every piece of code has one home, chosen by who uses it. Move code up the moment a second module needs it; never copy it.
+
+| Used by                                 | Knows a domain? | Home                                                                               |
+| :-------------------------------------- | :-------------- | :--------------------------------------------------------------------------------- |
+| One screen subtree                      | yes             | That screen's folder (Rule 28)                                                     |
+| One module                              | yes             | The module's `components/` or support folders (Rule 2)                             |
+| Two or more modules                     | yes             | A domain slice: `src/shared/domains/<domain>/`                                     |
+| Two or more modules                     | no              | `src/shared/components/`, `hooks/`, `utils/`, `constants/`, `types/`               |
+| The app shell (session, access, guards) | —               | `src/core/` (`authQueries`, `useAuthUser`, `useAccess`)                            |
+| Every module (the wire format)          | —               | `src/core/apis/<entity>.api.ts` and `src/core/types/<entity>.dto.ts` (Rules 2, 37) |
+
+- **A domain slice is a module without pages**: `src/shared/domains/<domain>/` is named after the domain it serves (`order`, `product`), not after the modules that use it. It holds `components/` laid out as a render tree (Rule 28: role suffixes, folders only for parents, flat files for components rendered by several parents) and the same support folders as a module (`services/`, `queries/`, `converters/`, `hooks/`, `schema/`, `types/`, `constants/`, `utils/`), all at its root. It has no page, no route and no `apis/`.
+- **One query factory per entity**: When two modules read the same entity, its service, `<entity>.queries.ts` and converter move into the slice, so both modules share one cache key and one invalidation (`<entity>Queries.all()`). Two modules that cache the same endpoint under their own keys show stale data after the other one writes.
+- **Option lists are slice hooks**: A select fed by another entity (mills, clients, technicians) uses `use-<entity>-options-query.ts` from that entity's slice, which runs `useQuery({ ...<entity>Queries.list(), select: <entity>Converter.toOptions })`.
+- **Slices sit below modules**: A module may import any slice. A slice may import another slice, `core`, `_widgets` and the generic `src/shared` folders, never a module or the router. Generic `src/shared` code never imports a slice, so it stays domain-free.
+- **Shared components and layouts stay presentational**: `src/shared/components/` and `src/shared/layout/` never import `@/core/apis` or a slice (Rule 3). A component that loads its own data belongs to a slice.
+- **Translations**: A slice reads the namespace of the domain it serves (`useTranslation(I18N_NAMESPACES.ORDER)`), declared in `src/locale/<domain>/` like any namespace (Rule 35). Text used by every screen goes to `common`.
+
+Enforced by `boundaries` (the `domain` element in `eslint.config.js`), `no-restricted-imports` on `src/shared/components` and `src/shared/layout`, and the `naming/*` rules, which run on slices as they do on modules.
+
+#### Rule 39 Layout Example
+
+The order form is used by `order-management`, `freight-management` and `weighbridge`; the mill select is used by nine modules.
+
+```text
+src/shared/domains/
+  ├── order/
+  │     ├── components/
+  │     │     ├── order-status-badge.tsx
+  │     │     └── order-form/
+  │     │           ├── order-form.tsx
+  │     │           └── order-form-footer.tsx
+  │     ├── converters/
+  │     │     └── order.converter.ts
+  │     ├── hooks/
+  │     │     └── use-order-query.ts
+  │     ├── queries/
+  │     │     └── order.queries.ts
+  │     ├── schema/
+  │     │     └── order-form.schema.ts
+  │     └── services/
+  │           └── order.service.ts
+  └── mill/
+        ├── converters/
+        │     └── mill.converter.ts
+        ├── hooks/
+        │     └── use-mill-options-query.ts
+        ├── queries/
+        │     └── mill.queries.ts
+        └── services/
+              └── mill.service.ts
+```
+
+---
+
+### Rule 40 - File and Identifier Naming
+
+A file name says what kind of code it holds, and the exported name says which file it came from. Folders, files and route segments are kebab-case.
+
+| Folder                    | File name                                       | Exports                                                                                                                 |
+| :------------------------ | :---------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `core/apis/`              | `<entity>.api.ts`                               | `<entity>Api` (`userManagementApi`)                                                                                     |
+| `core/types/`             | `<entity>.dto.ts`, `<name>.type.ts`             | `<Entity>Dto`, `Create<Entity>Payload`, `<Entity>ListRequestParams`                                                     |
+| `services/`               | `<entity>.service.ts`                           | `<entity>Service`                                                                                                       |
+| `queries/`                | `<entity>.queries.ts`                           | `<entity>Queries` with `all()`, `list(params)`, `detail(id)`                                                            |
+| `converters/`             | `<name>.converter.ts`                           | `<name>Converter` with `toRow`, `toRows`, `toOptions`, `toFormValues`, `toCreatePayload`                                |
+| `schema/`                 | `<form>.schema.ts`, `<screen>-search.schema.ts` | `create<Form>Schema(t)`, `<screen>SearchSchema`                                                                         |
+| `types/` (outside core)   | `<name>.type.ts`                                | `<Name>Props`, `<Form>Values`, `<Entity>Row`                                                                            |
+| `constants/`              | `<name>.constant.ts`                            | `SCREAMING_SNAKE` objects `as const` (`<MODULE>_QUERY_KEYS`, `<FORM>_DEFAULT_VALUES`, `<FORM>_LIMITS`)                  |
+| `utils/`                  | `<name>.util.ts`                                | camelCase functions (`toTelHref`)                                                                                       |
+| `hooks/`                  | `use-<name>.ts`                                 | `use<Name>`: `use<Entities>Query` / `use<Entity>Query` for reads, `use<Action><Entity>` for mutations (`useCreateUser`) |
+| `core/store/`             | `<name>.store.ts`                               | `use<Name>Store`                                                                                                        |
+| `core/guards/`            | `<name>-route.tsx`                              | `<Name>Route`                                                                                                           |
+| `core/interceptor/`       | `<name>.interceptor.ts`                         | `setup<Name>Interceptor`                                                                                                |
+| `router/routes/`          | `<module>-routes.ts`                            | `<module>Routes: RouteObject[]`                                                                                         |
+| `router/loaders/`         | `<module>.loader.ts`                            | `<module>Loader`                                                                                                        |
+| Screen folder             | `<screen>.tsx`                                  | `<Screen>Page`                                                                                                          |
+| `components/`             | `<name>-<role>.tsx` (Rule 28)                   | `<Name><Role>`                                                                                                          |
+| `src/locale/<namespace>/` | `en.json`, `vi.json`                            | The namespace is the module or domain folder name                                                                       |
+
+- **Name by entity, then by screen**: An entity file (`intervention.service.ts`, `intervention.queries.ts`) is named after the BE resource and shared by every screen of the module. A screen-specific file is named after the screen or form (`calendar-search.schema.ts`, `intervention-form.constant.ts`, `calendar-toolbar.type.ts`).
+- **Prefix with the module only to avoid a clash**: Query keys carry the module or slice name (`CALENDAR_QUERY_KEYS.CLIENTS = 'calendar-clients'`) because every key shares one cache. File names repeat the module name only when the bare name would be ambiguous (`user-filter.converter.ts` beside `user.converter.ts`).
+- **One exported object per support file**: A support file may also export the types or constants that only its object uses, but the object named in the table is the reason the file exists.
+- **Spell domain words out**: Use `grain-transfer-sheet`, not `gts`, in files and identifiers, unless the abbreviation is the term the story and the API use.
+- **`src/_widgets` keeps the layout of Rule 1**: `types.ts`, `constants.ts`, `variant.ts`, `utils.ts` and `use-<name>.ts` sit beside each primitive.
+
+`naming/support-file-name` in `eslint/naming.plugin.js` checks the file name per folder, that `.dto.ts` files exist only in `src/core/types`, that every `.api.ts`, `.service.ts`, `.queries.ts` and `.converter.ts` exports the object named after it, and where support folders may sit (Rules 28 and 39). The type, hook and constant names are checked in review.

@@ -23,7 +23,8 @@
       "calendar": "Lịch",
       "users": "Người dùng",
       "interventionCall": "Gọi khách hàng"
-    }
+    },
+    "toggleSection": "Mở hoặc thu gọn {{section}}"
   },
   "actions": {
     "cancel": "Hủy",

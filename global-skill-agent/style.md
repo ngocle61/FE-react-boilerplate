@@ -74,6 +74,91 @@ Use global design tokens and classes defined via the Tailwind v4 `@theme` config
 Do not add comments to the source code (neither single-line `//` nor multi-line `/* */`).
 The code should be self-documenting through clear naming and modular structure.
 
+### Rule 41 - `switch` for Three or More Branches
+
+- **Three or more branches are a `switch`**: When a value, class name or JSX element is chosen from three or more mutually exclusive branches, write a `switch`. Never a nested ternary, never an `if / else if / else` chain.
+- **Boolean conditions use `switch (true)`**: When the branches are checks rather than values of one expression, write `switch (true)` with one `case` per condition, in priority order.
+- **Two branches stay one ternary** (`a ? b : c`), or an early `return`.
+- **Return from a small function**: Put the `switch` in a function that returns the value (a module-level helper in `utils/` when it needs no hooks, per Rule 10) instead of assigning a `let` in every branch.
+- **A lookup table beats a `switch` that only maps values**: When every branch returns a constant for a known key, use a `Record<Key, Value>` constant (Rule 4) instead.
+
+Enforced by `no-nested-ternary` and `no-restricted-syntax` (no `else if`).
+
+#### Rule 41 Examples
+
+❌ **Bad**
+
+```tsx
+let primaryAction: ReactNode;
+if (isRejected) {
+  primaryAction = <Button onClick={onReinitiate}>{t('reinitiate')}</Button>;
+} else if (hasCriticalChange) {
+  primaryAction = <Button onClick={onReview}>{t('reviewChanges')}</Button>;
+} else {
+  primaryAction = <Button type="submit">{t('save')}</Button>;
+}
+
+const status = isPending ? 'loading' : data === undefined ? 'idle' : 'valid';
+```
+
+✅ **Good**
+
+```tsx
+const renderPrimaryAction = () => {
+  switch (true) {
+    case isRejected:
+      return <Button onClick={onReinitiate}>{t('reinitiate')}</Button>;
+    case hasCriticalChange:
+      return <Button onClick={onReview}>{t('reviewChanges')}</Button>;
+    default:
+      return <Button type="submit">{t('save')}</Button>;
+  }
+};
+```
+
+```ts
+export const toLoadStatus = (isPending: boolean, data: Maybe<unknown[]>): LoadStatus => {
+  switch (true) {
+    case isPending:
+      return LOAD_STATUSES.LOADING;
+    case data === undefined:
+      return LOAD_STATUSES.IDLE;
+    default:
+      return LOAD_STATUSES.VALID;
+  }
+};
+```
+
+### Rule 42 - Code That Passes Static Analysis
+
+Write code that a static analyzer (SonarQube, the type-aware ESLint config) accepts the first time, without changing behaviour to please it.
+
+**Enforced by lint**
+
+| Write                                                        | Not                                                    | Rule                                              |
+| :----------------------------------------------------------- | :----------------------------------------------------- | :------------------------------------------------ |
+| One `import` per module: `import { foo, type Bar } from 'x'` | Two imports of the same path                           | `import-x/no-duplicates` (`prefer-inline`)        |
+| `if (!user?.name)`                                           | `if (!user \|\| !user.name)`                           | `@typescript-eslint/prefer-optional-chain`        |
+| `Number.isNaN`, `Number.parseInt`, `Number.parseFloat`       | The globals `isNaN`, `parseInt`, `parseFloat`          | `no-restricted-globals`                           |
+| `value.replaceAll(/x/g, y)`                                  | `value.replace(/x/g, y)`                               | `no-restricted-syntax`                            |
+| A new variable                                               | Reassigning a parameter                                | `no-param-reassign`                               |
+| `void queryClient.invalidateQueries(...)`                    | A floating promise                                     | `@typescript-eslint/no-floating-promises`         |
+| `throw error` inside `async`, reject with an `Error`         | `return Promise.reject({...})`                         | `@typescript-eslint/prefer-promise-reject-errors` |
+| A plain function, or `Promise.resolve(value)`                | `async` without `await`                                | `@typescript-eslint/require-await`                |
+| `String(value)` only on `string \| number`                   | `String(obj)` / `` `${obj}` `` on objects or `unknown` | `@typescript-eslint/no-base-to-string`            |
+| Components declared at module level                          | A component declared inside another component          | `react-hooks/static-components`                   |
+
+**Checked in review**
+
+- **Native elements first**: `<button>` instead of `div role="button"`, `<fieldset>` instead of `role="group"`, `<section>` instead of `role="region"`. A clickable card that holds its own buttons gets a transparent overlay `<button className="absolute inset-0">` and `relative z-10` on the inner buttons. Every `onClick` on a non-button element also handles the keyboard; prefer making it a `<button>`. The ported primitives in `src/_widgets/ui` keep the roles of the shadcn source.
+- **ARIA only where the role supports it**: No `aria-invalid`, `aria-selected` or `aria-checked` on a role that does not define it; a toggle button uses `aria-pressed`.
+- **Stable keys**: Never the array index as `key` when the item has an id or another stable field.
+- **No fragment around a single child**, and no deprecated props: check the installed library version before using an API.
+- **`??` only when it means the same**: Replace `||` with `??` only when the left side can never be `''`, `0` or `false`. Check `null`, `undefined`, `''` and `0` before rewriting a condition with optional chaining.
+- **`.includes(v)`** instead of `.some((x) => x === v)`, a `Set` with `.has()` for a constant lookup list, `String.raw` for strings with `\`, and `Boolean` passed directly (`.filter(Boolean)`).
+- **Optional props are `?:` only**: `value?: Date`, never `value?: Maybe<Date>` (`Maybe` already includes `undefined`). Use `?: Nullable<T>` or `?: Nillable<T>` only when `null` is a valid value.
+- **No tricks to silence a tool**: Do not add `.map()` calls, wrapper helpers or `&&` chains whose only job is hiding a warning. If the plain code is correct, keep it and report the finding instead.
+
 ---
 
 ## 🎨 Tailwind CSS v4 Design System Guidelines

@@ -125,7 +125,9 @@ Complete shadcn/ui component management for adding, searching, fixing, styling, 
 
 ### Rule 32 - List Tables Fit the Viewport
 
-- **The page never scrolls for a table**: List pages live inside the `h-svh` app shell. The content wrapper under `PageHeader` takes `min-h-0 flex-1`, so the toolbar, the table and its footer share the height left in `main`.
+- **The shell is shared, pages only fill `<main>`**: `MainLayout` renders the sidebar, the header and `<main>` once for every route under `ProtectedRoute` (Rule 29), so a page never renders a layout, a sidebar or an error boundary of its own. Every page starts with `PageHeader` (title, description, actions).
+- **List pages share one skeleton**: A list page returns `PageHeader`, then `PageBody` from `src/shared/components/page-body/page-body.tsx` holding the toolbar or filters and the `PaginatedTable`, then the page's `-dialogs` component. Compose these as children; never a layout component with `header`, `filter` or `table` slot props (Rule 21). The `list-screen` generator writes this skeleton.
+- **The page never scrolls for a table**: List pages live inside the `h-svh` app shell. `PageBody` takes `min-h-0 flex-1`, so the toolbar, the table and its footer share the height left in `main`. Never rebuild that wrapper with `Flex` in a list page. Pages that are not lists (a calendar that fills the height only from `lg`, a chat thread) lay out their own body.
 - **Use `PaginatedTable`**: Paginated lists render through `src/shared/components/paginated-table/paginated-table.tsx` — `TableHeader` and the table body as children, plus `summary`, `page`, `totalPages` and `onPageChange`. Never hand-roll `Table` + page navigation on a list page; the page navigation (`PaginatedTablePages`) lives inside `paginated-table/` and is only rendered by `PaginatedTable`.
 - **The table scrolls, not the page**: The table container grows with `flex-1` and scrolls with `overflow-auto scrollbar-thin` (themed scrollbar in light and dark); `TableHeader` stays pinned at the top of the container (`sticky`, opaque background).
 - **Wide tables scroll horizontally inside the container**: Cells never wrap (`whitespace-nowrap`), so columns keep their natural width; when they don't fit, the table container scrolls sideways and the page never scrolls horizontally.
@@ -160,18 +162,26 @@ Complete shadcn/ui component management for adding, searching, fixing, styling, 
 ✅ **Good**
 
 ```tsx
-<Flex direction="col" gap={4} className="min-h-0 flex-1">
-  <UserManagementToolbar onNewClick={createDialog.open} />
-  <PaginatedTable
-    summary={t('table.totalLabel', { count: total })}
-    page={page}
-    totalPages={totalPages}
-    onPageChange={onPageChange}
-  >
-    <TableHeader>{headerRow}</TableHeader>
-    <TableBody>{rows}</TableBody>
-  </PaginatedTable>
-</Flex>
+<>
+  <PageHeader>
+    <PageHeaderContent>
+      <PageHeaderTitle>{t('title')}</PageHeaderTitle>
+    </PageHeaderContent>
+  </PageHeader>
+  <PageBody>
+    <UserManagementToolbar onNewClick={createDialog.open} />
+    <PaginatedTable
+      summary={t('table.totalLabel', { count: total })}
+      page={page}
+      totalPages={totalPages}
+      onPageChange={onPageChange}
+    >
+      <TableHeader>{headerRow}</TableHeader>
+      <TableBody>{rows}</TableBody>
+    </PaginatedTable>
+  </PageBody>
+  <UserManagementDialogs {...dialogProps} />
+</>
 ```
 
 ```tsx

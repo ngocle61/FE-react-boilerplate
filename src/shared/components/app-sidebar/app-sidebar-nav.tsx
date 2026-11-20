@@ -11,8 +11,9 @@ import {
   useSidebar,
 } from '@ui';
 
+import { AppSidebarNavParent } from './app-sidebar-nav-parent';
 import type { AppSidebarNavProps } from './app-sidebar.type';
-import { isNavigationPathActive } from '../../utils/navigation.util';
+import { isNavigationParent, isNavigationPathActive } from '../../utils/navigation.util';
 
 export const AppSidebarNav = ({ groups }: AppSidebarNavProps) => {
   const { t } = useTranslation();
@@ -24,20 +25,26 @@ export const AppSidebarNav = ({ groups }: AppSidebarNavProps) => {
       <SidebarGroupLabel>{t(group.labelKey)}</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {group.items.map(({ key, labelKey, href, icon: Icon }) => (
-            <SidebarMenuItem key={key}>
-              <SidebarMenuButton
-                asChild
-                isActive={isNavigationPathActive(pathname, href)}
-                tooltip={t(labelKey)}
-              >
-                <Link to={href} onClick={() => actions.setOpenMobile(false)}>
-                  <Icon aria-hidden />
-                  <span>{t(labelKey)}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {group.items.map((item) => {
+            if (isNavigationParent(item)) {
+              return <AppSidebarNavParent key={item.key} item={item} />;
+            }
+            const { key, labelKey, href, icon: Icon } = item;
+            return (
+              <SidebarMenuItem key={key}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isNavigationPathActive(pathname, href)}
+                  tooltip={t(labelKey)}
+                >
+                  <Link to={href} onClick={() => actions.setOpenMobile(false)}>
+                    <Icon aria-hidden />
+                    <span>{t(labelKey)}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
